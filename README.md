@@ -130,4 +130,12 @@ If you are working on a project that's related to OpenCode and is using "opencod
 
 ---
 
+## Team T1
+
+- Ahmad Aljabri
+- Hamad Labda
+- Abdulaziz Al Kubaisi
+- Belard Ange Rutayisire
+- Bel Ami Gisage Warakoze
+
 **Join our community** [Discord](https://discord.gg/opencode) | [X.com](https://x.com/opencode)
