@@ -481,6 +481,19 @@ test("disabled - disables edit/write/apply_patch when edit denied", () => {
   expect(result.has("bash")).toBe(false)
 })
 
+test("disabled - disables guided_debug when question denied", () => {
+  const result = Permission.disabled(
+    ["question", "guided_debug", "bash"],
+    [
+      { permission: "*", pattern: "*", action: "allow" },
+      { permission: "question", pattern: "*", action: "deny" },
+    ],
+  )
+  expect(result.has("question")).toBe(true)
+  expect(result.has("guided_debug")).toBe(true)
+  expect(result.has("bash")).toBe(false)
+})
+
 test("disabled - does not disable when partially denied", () => {
   const result = Permission.disabled(
     ["bash"],
