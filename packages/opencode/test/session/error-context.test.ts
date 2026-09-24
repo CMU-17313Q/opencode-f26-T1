@@ -25,7 +25,7 @@ describe("error context", () => {
     expect(
       ErrorContext.collect({
         type: "tool",
-        tool: "shell",
+        tool: "bash",
         state: {
           status: "completed",
           input: { command: "bun test" },
@@ -33,14 +33,14 @@ describe("error context", () => {
           metadata: { exit: 1, output: "Preview" },
         },
       }),
-    ).toMatchObject({ tool: "shell", exitCode: 1, output: "Full failure output", input: { command: "bun test" } })
+    ).toMatchObject({ tool: "bash", exitCode: 1, output: "Full failure output", input: { command: "bun test" } })
   })
 
   test("preserves available output on tool errors", () => {
     expect(
       ErrorContext.collect({
         type: "tool",
-        tool: "shell",
+        tool: "bash",
         state: {
           status: "error",
           metadata: { exit: 2, output: "Partial output" },
@@ -53,14 +53,28 @@ describe("error context", () => {
     "does not infer failure from invalid or successful exit %s",
     (exit) => {
       expect(
-        ErrorContext.collect({ type: "tool", tool: "shell", state: { status: "completed", metadata: { exit } } }),
+        ErrorContext.collect({ type: "tool", tool: "bash", state: { status: "completed", metadata: { exit } } }),
       ).toBeUndefined()
     },
   )
 
   test.each(["pending", "running"])("ignores %s tools", (status) => {
     expect(
-      ErrorContext.collect({ type: "tool", tool: "shell", state: { status, metadata: { exit: 1 } } }),
+      ErrorContext.collect({ type: "tool", tool: "bash", state: { status, metadata: { exit: 1 } } }),
+    ).toBeUndefined()
+  })
+
+  test("ignores interrupted tool errors", () => {
+    expect(
+      ErrorContext.collect({
+        type: "tool",
+        tool: "bash",
+        state: {
+          status: "error",
+          error: "Tool execution aborted",
+          metadata: { interrupted: true, output: "Partial output" },
+        },
+      }),
     ).toBeUndefined()
   })
 

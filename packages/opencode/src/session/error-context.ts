@@ -1,3 +1,4 @@
+import { ShellID } from "@/tool/shell/id"
 export interface Context {
   tool?: string
   error?: string
@@ -15,10 +16,11 @@ export function collect(part: unknown, messages: readonly unknown[] = []): Conte
   if (!isRecord(part) || part.type !== "tool" || !isRecord(part.state)) return
   const state = part.state
   const metadata = isRecord(state.metadata) ? state.metadata : {}
+  if (state.status === "error" && metadata.interrupted === true) return
   const exitCode = typeof metadata.exit === "number" && Number.isInteger(metadata.exit) ? metadata.exit : undefined
   if (
     state.status !== "error" &&
-    !(part.tool === "shell" && state.status === "completed" && exitCode !== undefined && exitCode !== 0)
+    !(part.tool === ShellID.ToolID && state.status === "completed" && exitCode !== undefined && exitCode !== 0)
   )
     return
 
