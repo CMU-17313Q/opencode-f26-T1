@@ -84,6 +84,7 @@ describe("session.error-explanation", () => {
     })
     expect(ErrorExplanation.check(reply([...sections].reverse())).ordered).toBe(false)
     expect(ErrorExplanation.check(`${reply(sections)}\n\n### Proposed fix\nImport it.`).fix).toBe(true)
+    expect(ErrorExplanation.check(`${reply(sections)}\n\n### Fixture\nA sample cart.`).fix).toBe(false)
     expect(ErrorExplanation.check(reply(sections, "To fix this, change count to Number(count).")).fix).toBe(true)
   })
 })

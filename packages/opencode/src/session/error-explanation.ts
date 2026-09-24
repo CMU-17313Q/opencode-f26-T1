@@ -30,7 +30,7 @@ const guidance: readonly string[] = [
 export const sections = ["What went wrong", "Where it happened", "Why it happened", "How sure I am"] as const
 
 const fixes = [
-  /^#+\s*(proposed |suggested |the |a )?fix/im,
+  /^#+\s*(proposed |suggested |the |a )?fix\b/im,
   /\b(to fix (this|it)|the fix is|you can fix|fix (this|it) by|change \S+ to|replace \S+ with)\b/i,
 ]
 
