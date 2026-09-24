@@ -22,7 +22,6 @@ const hints: readonly (readonly [RegExp, string])[] = [
 const guidance: readonly string[] = [
   "Start with the likely cause, in simple language a beginner can follow.",
   "Use only the evidence above and code you have read. Name the relevant files, functions, and error lines.",
-  "Treat the hint as a starting point and check it against the code.",
   "If confidence is low or information is missing, say you are not sure. Never state a guess as fact.",
   "Do not include, suggest, or apply a fix.",
 ]
@@ -30,7 +29,6 @@ const guidance: readonly string[] = [
 export function create(context: ErrorContext.Context): Explanation {
   const text = [context.error, context.output].filter((value) => value?.trim()).join("\n")
   const hint = hints.find(([pattern]) => pattern.test(text))?.[1]
-
   const locations = [...text.matchAll(/(\/?(?:[\w.-]+\/)*[\w.-]+\.[a-z]{1,4})(?::(\d+)|\((\d+),\d+\))/gi)]
   const files = new Set([
     ...locations.map((match) => `${match[1]} line ${match[2] ?? match[3]}`),
@@ -60,7 +58,7 @@ export function format(explanation: Explanation): string {
   return [
     "## Error evidence",
     `What happened: ${explanation.summary}`,
-    ...(explanation.hint ? [`Hint: ${explanation.hint}`] : []),
+    ...(explanation.hint ? [`Hint (check it against the code): ${explanation.hint}`] : []),
     `Confidence: ${explanation.confidence}`,
     ...explanation.evidence.map((item) => `- ${item}`),
     ...(explanation.missing.length ? [`Missing: ${explanation.missing.join(", ")}`] : []),
