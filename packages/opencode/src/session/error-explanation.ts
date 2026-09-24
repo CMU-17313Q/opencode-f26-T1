@@ -26,6 +26,14 @@ const guidance: readonly string[] = [
   "Do not include, suggest, or apply a fix.",
 ]
 
+// Headings of the student-facing reply, in order. The fix is deliberately not one of them.
+export const sections = ["What went wrong", "Where it happened", "Why it happened", "How sure I am"] as const
+
+const fixes = [
+  /^#+\s*(proposed |suggested |the |a )?fix\b/im,
+  /\b(to fix (this|it)|the fix is|you can fix|fix (this|it) by|change \S+ to|replace \S+ with)\b/i,
+]
+
 export function create(context: ErrorContext.Context): Explanation {
   const text = [context.error, context.output].filter((value) => value?.trim()).join("\n")
   const hint = hints.find(([pattern]) => pattern.test(text))?.[1]
@@ -65,7 +73,43 @@ export function format(explanation: Explanation): string {
     "",
     "## How to explain this to the student",
     ...guidance.map((item) => `- ${item}`),
+    "",
+    "## Response format",
+    "Reply to the student with exactly these sections, in this order:",
+    `### ${sections[0]}`,
+    "One or two plain sentences on the likely cause.",
+    `### ${sections[1]}`,
+    "The files, functions, and error lines from the evidence that matter. If none are known, say so.",
+    `### ${sections[2]}`,
+    "How the code led to this error, based on the evidence and the code you read.",
+    `### ${sections[3]}`,
+    certainty(explanation),
+    "",
+    "Stop after these sections. The explanation and the fix are separate steps: do not add a fix section.",
+    "End by asking whether the student wants help working out a fix.",
   ].join("\n")
+}
+
+/** Check a reply against the response format: which sections are missing or out of order, and whether it proposes a fix. */
+export function check(response: string) {
+  const headings = [...response.matchAll(/^#+\s*(.+?)\s*$/gm)].map((match) => match[1].toLowerCase())
+  const positions = sections.map((section) => headings.indexOf(section.toLowerCase()))
+  return {
+    missing: sections.filter((_, index) => positions[index] === -1),
+    ordered: positions
+      .filter((position) => position !== -1)
+      .every((position, index, all) => !index || all[index - 1] < position),
+    fix: fixes.some((pattern) => pattern.test(response)),
+  }
+}
+
+function certainty(explanation: Explanation) {
+  const missing = explanation.missing.length ? ` Say what is missing: ${explanation.missing.join(", ")}.` : ""
+  if (explanation.confidence === "high")
+    return `Confidence is high: the error points to specific code. Still say it is the likely cause.${missing}`
+  if (explanation.confidence === "medium")
+    return `Confidence is medium: the error type is recognized but no exact location was found. Say which part is a best guess.${missing}`
+  return `Confidence is low: the error was not recognized. Say clearly that you are not sure, and what would help.${missing}`
 }
 
 function summarize(context: ErrorContext.Context): string {
