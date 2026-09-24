@@ -22,8 +22,9 @@ export const ExplainErrorTool = Tool.define<typeof Parameters, Metadata, never>(
         const context = params.error?.trim()
           ? ErrorContext.collect({ type: "tool", state: { status: "error", error: params.error } }, ctx.messages)
           : ctx.messages
-              .flatMap((message) => message.parts)
-              .map((part) => ErrorContext.collect(part, ctx.messages))
+              .flatMap((message, index) =>
+                message.parts.map((part) => ErrorContext.collect(part, ctx.messages.slice(0, index + 1))),
+              )
               .findLast((found) => found !== undefined)
 
         if (!context)

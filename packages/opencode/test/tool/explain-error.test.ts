@@ -21,7 +21,6 @@ const explain = (error: string | undefined, messages: readonly object[]) =>
   Effect.gen(function* () {
     const info = yield* ExplainErrorTool
     const tool = yield* info.init()
-
     return yield* tool.execute(
       { error },
       {
@@ -37,15 +36,17 @@ const explain = (error: string | undefined, messages: readonly object[]) =>
   })
 
 describe("tool.explain_error", () => {
-  it.instance("explains the latest failure with evidence before guidance and no fix", () =>
+  it.instance("explains the latest failure using only history up to it, with no fix", () =>
     Effect.gen(function* () {
       const latest = failure("error: expect(received).toBe(4)\n    at add (/repo/src/math.test.ts:8:18)")
-      const result = yield* explain(undefined, [request, failure("ENOENT: old.ts"), latest])
+      const later = { info: { role: "user" }, parts: [{ type: "text", text: "Now rename the button" }] }
+      const result = yield* explain(undefined, [request, failure("ENOENT: old.ts"), latest, later])
       const evidence = result.output.slice(0, result.output.indexOf("## How to explain this to the student"))
 
       expect(evidence).toContain("The `shell` step `bun test` failed while working on: Get the tests passing.")
       expect(evidence).toContain("- File: /repo/src/math.test.ts line 8\n- Function: add")
       expect(evidence).not.toContain("old.ts")
+      expect(evidence).not.toContain("rename the button")
       expect(evidence).not.toMatch(/fix/i)
       expect(result.output).toContain("- Do not include, suggest, or apply a fix.")
       expect(result.metadata).toMatchObject({ found: true, confidence: "high" })
