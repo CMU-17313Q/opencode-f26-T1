@@ -54,12 +54,22 @@ describe("session.testing-strategy", () => {
     expect(output).not.toContain("bun test: passed")
   })
 
-  test("does not invent edge or failure cases without supporting context", () => {
-    const strategy = TestingStrategy.create({ proposedChange: "rename the displayed heading" })
+  test("recommends an edge case when the proposed change handles empty input without context", () => {
+    const strategy = TestingStrategy.create({ proposedChange: "handle an empty configuration file" })
 
-    expect(strategy.connection).toBe(
-      "Validate the proposed change (rename the displayed heading) in the affected workflow.",
+    expect(strategy.recommended.map((item) => item.case)).toEqual(["normal", "edge"])
+    expect(strategy.recommended.find((item) => item.case === "edge")?.test).toContain(
+      "handle an empty configuration file",
     )
+  })
+
+  test("does not infer an edge case from file context for a simple heading rename", () => {
+    const strategy = TestingStrategy.create({
+      proposedChange: "rename the displayed heading",
+      context: { files: [{ path: "src/header.ts" }] },
+    })
+
+    expect(strategy.connection).toBe("Validate the proposed change (rename the displayed heading) in src/header.ts.")
     expect(strategy.executed).toEqual([])
     expect(strategy.recommended.map((item) => item.case)).toEqual(["normal"])
   })

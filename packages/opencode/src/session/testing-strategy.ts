@@ -47,9 +47,9 @@ export function create(input: Input): Strategy {
   const code = input.context?.exitCode
   const observed = failure ? `${failure}${code === undefined ? "" : ` (exit ${code})`}` : undefined
   const edge =
-    paths.length > 0 ||
-    Boolean(input.context?.task?.trim()) ||
-    Boolean(input.context?.input && Object.keys(input.context.input).length)
+    /\b(boundar(?:y|ies)|edge cases?|empty|missing|absent|minimal|none|null|undefined|zero|negative|maximum|minimum|max|min|limit|overflow|underflow|unmatched|malformed|invalid|duplicate|first|last)\b/i.test(
+      input.proposedChange,
+    )
 
   return {
     connection: observed
@@ -73,7 +73,7 @@ export function create(input: Input): Strategy {
         ? [
             {
               case: "edge" as const,
-              test: `Exercise boundary conditions around ${target}, including empty, missing, and minimal valid input where the interface permits them.`,
+              test: `Exercise boundary conditions around ${target} for the proposed change (${change}), including empty, missing, and minimal valid input where the interface permits them.`,
               reason:
                 "Checks that the change behaves predictably at nearby input boundaries and does not introduce a regression.",
             },
