@@ -1759,128 +1759,130 @@ describe("run stream transport", () => {
     }
   })
 
-  test("recovers pending questions from question.list when question.asked is missed", async () => {
-    const src = eventFeed()
-    const ui = footer()
-    let questionCalls = 0
-    const request = {
-      id: "question-1",
-      sessionID: "session-1",
-      questions: [
-        {
-          question: "Which area should I inspect first?",
-          header: "Area",
-          options: [{ label: "CLI", description: "Look at the direct run flow." }],
-          multiple: false,
+  for (const toolName of ["question", "guided_debug"]) {
+    test(`recovers pending ${toolName} questions from question.list when question.asked is missed`, async () => {
+      const src = eventFeed()
+      const ui = footer()
+      let questionCalls = 0
+      const request = {
+        id: "question-1",
+        sessionID: "session-1",
+        questions: [
+          {
+            question: "Which area should I inspect first?",
+            header: "Area",
+            options: [{ label: "CLI", description: "Look at the direct run flow." }],
+            multiple: false,
+          },
+        ],
+        tool: {
+          messageID: "msg-1",
+          callID: "call-question-1",
         },
-      ],
-      tool: {
-        messageID: "msg-1",
-        callID: "call-question-1",
-      },
-    }
-    const transport = await createSessionTransport({
-      sdk: sdk({
-        stream: src.stream,
-        questions: async () => {
-          questionCalls += 1
-          return ok(questionCalls > 1 ? [request] : [])
-        },
-        promptAsync: async () => {
-          queueMicrotask(() => {
-            src.push(busy())
-            src.push(assistant("msg-1"))
-            src.push(
-              toolUpdated(
-                runningTool({
-                  sessionID: "session-1",
-                  messageID: "msg-1",
-                  id: "question-tool-1",
-                  callID: "call-question-1",
-                  tool: "question",
-                  body: {
-                    questions: request.questions,
-                  },
-                }),
-              ),
-            )
-          })
-          return ok(undefined)
-        },
-      }),
-      sessionID: "session-1",
-      thinking: true,
-      limits: () => ({}),
-      footer: ui.api,
-    })
-
-    const ctrl = new AbortController()
-
-    try {
-      const run = transport.runPromptTurn({
-        agent: undefined,
-        model: undefined,
-        variant: undefined,
-        prompt: { text: "hello", parts: [] },
-        files: [],
-        includeFiles: false,
-        signal: ctrl.signal,
-      })
-
-      const view = await waitFor(() => {
-        const item = ui.events.findLast((event) => event.type === "stream.view")
-        return item?.type === "stream.view" && item.view.type === "question" ? item.view : undefined
-      })
-
-      expect(view).toEqual({
-        type: "question",
-        request,
-      })
-
-      expect(ui.events).toContainEqual({
-        type: "stream.patch",
-        patch: {
-          phase: "running",
-          status: "awaiting answer",
-        },
-      })
-
-      src.push(
-        toolUpdated(
-          completedTool({
-            sessionID: "session-1",
-            messageID: "msg-1",
-            id: "question-tool-1",
-            callID: "call-question-1",
-            tool: "question",
-            body: {
-              questions: request.questions,
-            },
-            output: "User has answered your questions.",
-            metadata: {
-              answers: [["CLI"]],
-            },
-          }),
-        ),
-      )
-
-      expect(
-        await waitFor(() => {
-          const item = ui.events.findLast((event) => event.type === "stream.view")
-          return item?.type === "stream.view" && item.view.type === "prompt" ? item : undefined
+      }
+      const transport = await createSessionTransport({
+        sdk: sdk({
+          stream: src.stream,
+          questions: async () => {
+            questionCalls += 1
+            return ok(questionCalls > 1 ? [request] : [])
+          },
+          promptAsync: async () => {
+            queueMicrotask(() => {
+              src.push(busy())
+              src.push(assistant("msg-1"))
+              src.push(
+                toolUpdated(
+                  runningTool({
+                    sessionID: "session-1",
+                    messageID: "msg-1",
+                    id: "question-tool-1",
+                    callID: "call-question-1",
+                    tool: toolName,
+                    body: {
+                      questions: request.questions,
+                    },
+                  }),
+                ),
+              )
+            })
+            return ok(undefined)
+          },
         }),
-      ).toEqual({
-        type: "stream.view",
-        view: { type: "prompt" },
+        sessionID: "session-1",
+        thinking: true,
+        limits: () => ({}),
+        footer: ui.api,
       })
 
-      ctrl.abort()
-      await run
-    } finally {
-      src.close()
-      await transport.close()
-    }
-  })
+      const ctrl = new AbortController()
+
+      try {
+        const run = transport.runPromptTurn({
+          agent: undefined,
+          model: undefined,
+          variant: undefined,
+          prompt: { text: "hello", parts: [] },
+          files: [],
+          includeFiles: false,
+          signal: ctrl.signal,
+        })
+
+        const view = await waitFor(() => {
+          const item = ui.events.findLast((event) => event.type === "stream.view")
+          return item?.type === "stream.view" && item.view.type === "question" ? item.view : undefined
+        })
+
+        expect(view).toEqual({
+          type: "question",
+          request,
+        })
+
+        expect(ui.events).toContainEqual({
+          type: "stream.patch",
+          patch: {
+            phase: "running",
+            status: "awaiting answer",
+          },
+        })
+
+        src.push(
+          toolUpdated(
+            completedTool({
+              sessionID: "session-1",
+              messageID: "msg-1",
+              id: "question-tool-1",
+              callID: "call-question-1",
+              tool: toolName,
+              body: {
+                questions: request.questions,
+              },
+              output: "User has answered your questions.",
+              metadata: {
+                answers: [["CLI"]],
+              },
+            }),
+          ),
+        )
+
+        expect(
+          await waitFor(() => {
+            const item = ui.events.findLast((event) => event.type === "stream.view")
+            return item?.type === "stream.view" && item.view.type === "prompt" ? item : undefined
+          }),
+        ).toEqual({
+          type: "stream.view",
+          view: { type: "prompt" },
+        })
+
+        ctrl.abort()
+        await run
+      } finally {
+        src.close()
+        await transport.close()
+      }
+    })
+  }
 
   test("does not resurrect questions if question.list resolves after tool completion", async () => {
     const src = eventFeed()

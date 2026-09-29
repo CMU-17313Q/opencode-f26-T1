@@ -234,6 +234,38 @@ describe("run session data", () => {
     })
   })
 
+  test("clears a guided debugging question when its tool completes without a reply event", () => {
+    const request = {
+      id: "question-1",
+      sessionID: "session-1",
+      questions: [
+        {
+          question: "Would you like to see the proposed fix?",
+          header: "Testing strategy",
+          options: [{ label: "Show proposed fix", description: "Continue to the fix." }],
+          multiple: false,
+        },
+      ],
+      tool: { messageID: "msg-1", callID: "call-1" },
+    }
+    const asked = reduce(createSessionData(), { type: "question.asked", properties: request })
+    expect(asked.data.questions).toHaveLength(1)
+
+    const completed = reduce(
+      asked.data,
+      tool({
+        id: "tool-1",
+        messageID: "msg-1",
+        callID: "call-1",
+        tool: "guided_debug",
+        state: { status: "completed", input: {}, output: "", title: "Guided debugging", metadata: {} },
+      }),
+    )
+
+    expect(completed.data.questions).toHaveLength(0)
+    expect(completed.footer?.view).toEqual({ type: "prompt" })
+  })
+
   test("refreshes the active permission view when tool input arrives later", () => {
     const data = reduce(createSessionData(), {
       type: "permission.asked",
