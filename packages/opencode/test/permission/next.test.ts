@@ -481,6 +481,43 @@ test("disabled - disables edit/write/apply_patch when edit denied", () => {
   expect(result.has("bash")).toBe(false)
 })
 
+test("disabled - disables guided_debug when question denied", () => {
+  const result = Permission.disabled(
+    ["question", "guided_debug", "bash"],
+    [
+      { permission: "*", pattern: "*", action: "allow" },
+      { permission: "question", pattern: "*", action: "deny" },
+    ],
+  )
+  expect(result.has("question")).toBe(true)
+  expect(result.has("guided_debug")).toBe(true)
+  expect(result.has("bash")).toBe(false)
+})
+
+test("disabled - disables guided_debug independently of question", () => {
+  const result = Permission.disabled(
+    ["question", "guided_debug"],
+    [
+      { permission: "*", pattern: "*", action: "allow" },
+      { permission: "guided_debug", pattern: "*", action: "deny" },
+    ],
+  )
+  expect(result.has("question")).toBe(false)
+  expect(result.has("guided_debug")).toBe(true)
+})
+
+test("disabled - keeps guided_debug available when question explicitly overrides a wildcard deny", () => {
+  const result = Permission.disabled(
+    ["question", "guided_debug"],
+    [
+      { permission: "*", pattern: "*", action: "deny" },
+      { permission: "question", pattern: "*", action: "allow" },
+    ],
+  )
+  expect(result.has("question")).toBe(false)
+  expect(result.has("guided_debug")).toBe(false)
+})
+
 test("disabled - does not disable when partially denied", () => {
   const result = Permission.disabled(
     ["bash"],

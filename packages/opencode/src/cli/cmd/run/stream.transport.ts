@@ -922,7 +922,7 @@ function createLayer(input: StreamInput) {
             event.type === "message.part.updated" &&
             event.properties.part.sessionID === input.sessionID &&
             event.properties.part.type === "tool" &&
-            event.properties.part.tool === "question" &&
+            (event.properties.part.tool === "question" || event.properties.part.tool === "guided_debug") &&
             event.properties.part.state.status === "running" &&
             state.data.questions.length === 0
           ) {

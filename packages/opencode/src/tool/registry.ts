@@ -4,6 +4,7 @@ import { Ripgrep } from "@opencode-ai/core/ripgrep"
 import { PlanExitTool } from "./plan"
 import { Session } from "@/session/session"
 import { QuestionTool } from "./question"
+import { GuidedDebugTool } from "./guided-debug"
 import { ExplainErrorTool } from "./explain-error"
 import { ShellTool } from "./shell"
 import { EditTool } from "./edit"
@@ -98,6 +99,7 @@ const layer = Layer.effect(
     const task = yield* TaskTool
     const read = yield* ReadTool
     const question = yield* QuestionTool
+    const guidedDebug = yield* GuidedDebugTool
     const explainError = yield* ExplainErrorTool
     const todo = yield* TodoWriteTool
     const lsptool = yield* LspTool
@@ -218,6 +220,7 @@ const layer = Layer.effect(
           skill: Tool.init(skilltool),
           patch: Tool.init(patchtool),
           question: Tool.init(question),
+          guidedDebug: Tool.init(guidedDebug),
           explainError: Tool.init(explainError),
           lsp: Tool.init(lsptool),
           plan: Tool.init(plan),
@@ -229,6 +232,7 @@ const layer = Layer.effect(
           builtin: [
             tool.invalid,
             ...(questionEnabled ? [tool.question] : []),
+            ...(questionEnabled ? [tool.guidedDebug] : []),
             tool.shell,
             tool.read,
             tool.glob,
