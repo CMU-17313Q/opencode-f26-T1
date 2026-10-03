@@ -5,6 +5,7 @@ import { PlanExitTool } from "./plan"
 import { Session } from "@/session/session"
 import { QuestionTool } from "./question"
 import { GuidedDebugTool } from "./guided-debug"
+import { ExplainErrorTool } from "./explain-error"
 import { ShellTool } from "./shell"
 import { EditTool } from "./edit"
 import { GlobTool } from "./glob"
@@ -99,6 +100,7 @@ const layer = Layer.effect(
     const read = yield* ReadTool
     const question = yield* QuestionTool
     const guidedDebug = yield* GuidedDebugTool
+    const explainError = yield* ExplainErrorTool
     const todo = yield* TodoWriteTool
     const lsptool = yield* LspTool
     const plan = yield* PlanExitTool
@@ -219,6 +221,7 @@ const layer = Layer.effect(
           patch: Tool.init(patchtool),
           question: Tool.init(question),
           guidedDebug: Tool.init(guidedDebug),
+          explainError: Tool.init(explainError),
           lsp: Tool.init(lsptool),
           plan: Tool.init(plan),
           ...(codeModeTool ? { execute: Tool.init(codeModeTool) } : {}),
@@ -242,6 +245,7 @@ const layer = Layer.effect(
             tool.search,
             tool.skill,
             tool.patch,
+            tool.explainError,
             ...(tool.execute ? [tool.execute] : []),
             ...(flags.experimentalLspTool ? [tool.lsp] : []),
             ...(flags.experimentalPlanMode && flags.client === "cli" ? [tool.plan] : []),
