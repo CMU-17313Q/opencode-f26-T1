@@ -371,11 +371,11 @@ function syncPermission(data: SessionData, part: ToolPart): FooterOutput | undef
   }
 }
 
-// Question tool replies can complete without a matching question.replied event.
+// Question-based tool replies can complete without a matching question.replied event.
 // When that happens, drop the recovered pending request tied to this tool call so
 // the footer can return to the next blocker or to the prompt.
 function syncQuestion(data: SessionData, part: ToolPart): FooterOutput | undefined {
-  if (part.tool !== "question") {
+  if (part.tool !== "question" && part.tool !== "guided_debug") {
     return undefined
   }
 

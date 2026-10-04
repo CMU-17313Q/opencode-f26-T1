@@ -206,9 +206,19 @@ export function disabled(tools: string[], ruleset: PermissionV1.Ruleset): Set<st
   const reads = ["list_mcp_resources", "list_mcp_resource_templates", "read_mcp_resource"]
   return new Set(
     tools.filter((tool) => {
-      const permission = edits.includes(tool) ? "edit" : reads.includes(tool) ? "read" : tool
+      const permission = edits.includes(tool)
+        ? "edit"
+        : reads.includes(tool)
+          ? "read"
+          : tool === "guided_debug"
+            ? "question"
+            : tool
       const rule = ruleset.findLast((rule) => Wildcard.match(permission, rule.permission))
-      return rule?.pattern === "*" && rule.action === "deny"
+      if (rule?.pattern === "*" && rule.action === "deny") return true
+      if (tool !== "guided_debug") return false
+
+      const ownRule = ruleset.findLast((rule) => rule.permission !== "*" && Wildcard.match(tool, rule.permission))
+      return ownRule?.pattern === "*" && ownRule.action === "deny"
     }),
   )
 }
