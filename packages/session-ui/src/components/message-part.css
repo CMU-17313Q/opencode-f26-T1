@@ -936,6 +936,9 @@
     color: var(--v2-text-text-base);
     padding: 0 10px;
     flex-shrink: 0;
+    white-space: pre-line;
+    max-height: 40vh;
+    overflow-y: auto;
     -webkit-user-select: text;
     user-select: text;
   }
