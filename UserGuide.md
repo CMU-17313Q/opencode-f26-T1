@@ -72,32 +72,16 @@ The tests cover explicit tool errors, failed shell commands, output selection, i
 
 These cases cover issue #4's acceptance criteria: receiving failure information, including available context, handling incomplete data gracefully, and verifying collection behavior automatically. They verify the collector itself; they do not establish that the complete guided-debugging flow works.
 
-## Error Explanation — Issue #5
+## Contributions
 
-### What it does
+This feature was built by Team T1 over two sprints. Each member owned one part, and the parts were connected through pull requests and code reviews.
 
-When something fails, OpenCode can call the `explain_error` tool before suggesting a fix. The tool finds the error that just happened, picks out the file, line, and error message, and says how sure it is. OpenCode then explains the cause in simple words, without giving the fix.
+**@Ahmed120515: Error context (#4).** _Description of the error context collector and a link to its tests._
 
-### Manual test
+**@belamigw: Error explanation (#5).** Added the `explain_error` tool. When something fails, it finds the error that just happened, picks out the file, line and error message, and rates how sure it is, so OpenCode can explain the cause without giving the fix. Tests in [`packages/opencode/test/tool/explain-error.test.ts`](packages/opencode/test/tool/explain-error.test.ts) check that it uses only the latest failure, finds the right file, never includes a fix, and is unsure when the error is unclear.
 
-1. In an empty folder, create `sum.test.ts`:
+**@akkubais: Testing strategy (#6).** _Description of the testing strategy and a link to its tests._
 
-   ```ts
-   import { expect, test } from "bun:test"
-   test("adds", () => expect(1 + 1).toBe(3))
-   ```
+**@hlabda: Guided debugging flow (#7).** _Description of the guided debugging flow and a link to its tests._
 
-2. From the repository root, run `bun dev <path-to-folder>`.
-3. Ask: "Run bun test, then explain why it failed before suggesting a fix."
-4. Confirm that the reply names `sum.test.ts` line 2 and does not include a fix.
-
-### Automated tests
-
-[`packages/opencode/test/tool/explain-error.test.ts`](packages/opencode/test/tool/explain-error.test.ts) checks that the tool:
-
-- Explains the error that just happened, using only messages up to it.
-- Finds the file, line, and function, and never includes a fix.
-- Catches a `bash` command that exits with an error.
-- Is unsure when the error is unclear, and asks for the error when nothing failed.
-
-These cover each acceptance criterion of issue #5. The two bugs found in review each have a test that fails on the old code. The exact wording from the AI model is checked by the manual test.
+**@a-belard: Response format (#9).** _Description of the response format and a link to its tests._
