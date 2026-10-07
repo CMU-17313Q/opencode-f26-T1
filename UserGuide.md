@@ -2,17 +2,122 @@
 
 ## What it does
 
-_What guided debugging is and what a student sees, in two or three sentences (#20)._
+Guided debugging helps students understand an error and how to test a change before seeing a proposed fix. OpenCode explains the failure, presents a testing strategy, and asks whether to continue or keep investigating. It distinguishes actual test results from recommended checks that have not been run.
 
 ## How to use it
 
-_Steps to try it on a small failing example: the example file, how to start OpenCode, what to ask, and what to choose at each prompt (#20)._
+Use a version containing the integration from PR #22. The walkthrough below was verified on branch `integrate-guided-debug`, commit `e0690dd`.
+
+You need Bun and the repository dependencies installed (`bun install` from the repository root), plus a connected model that supports tool calls.
+
+### Create a failing calculator example
+
+From the repository root, run these commands on macOS or Linux:
+
+```bash
+guided_demo=$(mktemp -d /tmp/opencode-guided-XXXXXX)
+
+cat > "$guided_demo/calculator.ts" <<'EOF'
+export function add(a: number, b: number) {
+  return a - b
+}
+EOF
+
+cat > "$guided_demo/calculator.test.ts" <<'EOF'
+import { expect, test } from "bun:test"
+import { add } from "./calculator"
+
+test("adds positive numbers", () => {
+  expect(add(2, 3)).toBe(5)
+})
+
+test("adds zero", () => {
+  expect(add(4, 0)).toBe(4)
+})
+
+test("adds negative numbers", () => {
+  expect(add(-2, -3)).toBe(-5)
+})
+EOF
+
+bun run dev "$guided_demo"
+```
+
+This opens the local OpenCode implementation in a temporary project outside the repository.
+
+### Run the guided workflow
+
+Use `/connect` to connect a provider if needed, then `/models` to select a model. Our recorded walkthrough used OpenRouter. If a free model is rate-limited, select another available model while keeping the team's shared credit budget in mind.
+
+Paste this request into OpenCode:
+
+> Run bun test for this calculator project. If it fails, use explain_error, then testing_strategy, then guided_debug to help me understand the failure and testing strategy. Do not show or apply the fix until I approve through guided_debug. Only claim tests passed if you actually ran them and saw passing results.
+
+1. The initial test run should report **1 pass and 2 failures**.
+2. Read the error explanation, then choose **Review testing strategy**.
+3. Read the testing strategy, then choose **Show proposed fix** when ready. Choosing **Keep investigating** at either prompt should stop progression to the fix.
+4. To explicitly authorize the edit and verification, say: **Apply the fix to calculator.ts only, leave the tests unchanged, and run bun test again.**
+5. Confirm that `calculator.ts` now returns `a + b` and the test rerun reports **3 pass, 0 fail**.
+
+### What each stage provides
+
+- `explain_error` collects the failure evidence and requests an explanation with four sections: **What went wrong**, **Where it happened**, **Why it happened**, and **How sure I am**. It should acknowledge missing information or uncertainty.
+- `testing_strategy` uses the proposed change goal and available error context to recommend relevant normal, edge, and failure cases. It explains why to check them and separates supplied test-run evidence from recommendations.
+- `guided_debug` presents the explanation and testing strategy in order and asks for the student's decision before allowing the proposed fix to be shown.
+
+The model coordinates the tool calls. Showing a proposed fix and applying a change are separate actions; edits still depend on the student's request and normal permissions.
 
 ## How to test it
 
-_Manual check: what to confirm when following the steps above (#20)._
+### Manual verification
 
-_Automated tests: the command that runs all guided debugging tests, and what they cover (#20)._
+Follow the calculator example and confirm:
+
+- The initial failing test output is captured.
+- The agent calls `explain_error`, then `testing_strategy`, then `guided_debug`.
+- The explanation identifies the subtraction in `calculator.ts` and the failed assertions.
+- The testing strategy appears before the proposed fix.
+- The fix is withheld until approval.
+- After the approved change, the original tests pass without being removed or weakened.
+- Additional recommended checks are not described as completed unless they were actually run.
+
+Save screenshots or a short recording of the tool calls, explanation, testing strategy, and final test results. Record the commit, model, and runtime used.
+
+To verify a stop path separately, choose **Keep investigating** and confirm that no fix is shown or applied.
+
+### Recorded calculator walkthrough
+
+On 7 October 2026, Ahmad tested branch `integrate-guided-debug` at commit `e0690dd`, using macOS, Bun 1.3.14, and GPT-6.1 Sol through OpenRouter.
+
+The initial run reported **1 pass and 2 failures**. The workflow explained the error and presented the testing strategy before approval. After approval, the calculator was changed from subtraction to addition, and the rerun reported **3 pass, 0 fail**. The response explicitly stated that additional recommended edge cases had not been run.
+
+[Results and screenshots are recorded on issue #20](https://github.com/CMU-17313Q/opencode-f26-T1/issues/20#issuecomment-6034222793).
+
+These results apply to the tested branch commit, not a later merged version of `main`.
+
+### Automated verification
+
+From the repository root of a version containing PR #22, run:
+
+```bash
+cd packages/opencode
+bun test test/session/error-context.test.ts test/session/error-explanation.test.ts test/session/testing-strategy.test.ts test/tool/explain-error.test.ts test/tool/testing-strategy.test.ts test/tool/guided-debug.test.ts test/tool/guided-debugging-flow.test.ts
+```
+
+These tests cover error collection, explanation evidence and formatting, testing recommendations, individual tools, and the combined flow. They also check approval behavior and the distinction between recommended tests and supplied test-run evidence.
+
+Related permission, registry, and CLI question tests can be run with:
+
+```bash
+bun test test/permission/next.test.ts test/tool/registry.test.ts test/cli/run/session-data.test.ts test/cli/run/stream.transport.test.ts
+```
+
+Automated tests complement the live-model walkthrough; they do not establish that every model will follow the tool instructions correctly.
+
+### Known limitations
+
+An earlier check at commit `fa55913` found that the explanation parser did not recognize Bun's `undefined is not an object` wording or inline `[eval]` locations. The collector still recovered the failed command, output, and exit code. The successful calculator walkthrough does not establish that these parser limitations have been fixed.
+
 
 ## Contributions
 
