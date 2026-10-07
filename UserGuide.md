@@ -18,7 +18,7 @@ _Automated tests: the command that runs all guided debugging tests, and what the
 
 This feature was built by Team T1 over two sprints. Each member owned one part, and the parts were connected through pull requests and code reviews.
 
-**@Ahmed120515: Error context (#4).** _Description of the error context collector and a link to its tests._
+**@Ahmed120515: Error context (#4).** Added the error-context collector, which captures explicit tool errors and completed shell commands with nonzero exit codes. It preserves available output, command input, exit code, and the latest user task and supplied file context. It ignores successful, unfinished, and interrupted tool calls and handles missing information gracefully. Tests in [error-context.test.ts](packages/opencode/test/session/error-context.test.ts) cover failure detection, ignored cases, incomplete data, and task/file context.
 
 **@belamigw: Error explanation (#5).** Added the `explain_error` tool. When something fails, it finds the error that just happened, picks out the file, line and error message, and rates how sure it is, so OpenCode can explain the cause without giving the fix. Tests in [`packages/opencode/test/tool/explain-error.test.ts`](packages/opencode/test/tool/explain-error.test.ts) check that it uses only the latest failure, finds the right file, never includes a fix, and is unsure when the error is unclear.
 
