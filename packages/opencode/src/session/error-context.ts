@@ -51,6 +51,14 @@ export function collect(part: unknown, messages: readonly unknown[] = []): Conte
   }
 }
 
+/** Find the pasted error, or else the latest failure in the history, with only the history up to that failure. */
+export function latest(messages: readonly { parts: readonly unknown[] }[], pasted?: string) {
+  if (pasted?.trim()) return collect({ type: "tool", state: { status: "error", error: pasted } }, messages)
+  return messages
+    .flatMap((message, index) => message.parts.map((part) => collect(part, messages.slice(0, index + 1))))
+    .findLast((found) => found !== undefined)
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value)
 }

@@ -1,5 +1,7 @@
 Use this tool during guided debugging after you have prepared an error explanation and a testing strategy, but before you show or apply a proposed fix.
 
+Get both inputs in this order. First call `explain_error` and write the explanation in the response format it returns. Then call `testing_strategy` for the change you would propose, and pass its result as the testing strategy. Do not skip either step.
+
 Pass a student-friendly explanation of the error and a testing strategy that covers the relevant normal, edge, and failure cases. Do not include the proposed fix in either field. The tool shows the explanation first, the testing strategy second, and then asks the student whether they are ready to see the fix.
 
 You must follow the student's decision in the tool result. Do not present or apply the proposed fix unless the result explicitly authorizes you to present it.

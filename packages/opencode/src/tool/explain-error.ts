@@ -19,13 +19,7 @@ export const ExplainErrorTool = Tool.define<typeof Parameters, Metadata, never>(
     parameters: Parameters,
     execute: (params: Schema.Schema.Type<typeof Parameters>, ctx: Tool.Context<Metadata>) =>
       Effect.sync(() => {
-        const context = params.error?.trim()
-          ? ErrorContext.collect({ type: "tool", state: { status: "error", error: params.error } }, ctx.messages)
-          : ctx.messages
-              .flatMap((message, index) =>
-                message.parts.map((part) => ErrorContext.collect(part, ctx.messages.slice(0, index + 1))),
-              )
-              .findLast((found) => found !== undefined)
+        const context = ErrorContext.latest(ctx.messages, params.error)
 
         if (!context)
           return {

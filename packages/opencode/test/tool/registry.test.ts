@@ -100,14 +100,17 @@ afterEach(async () => {
 })
 
 describe("tool.registry", () => {
-  it.instance("exposes guided debugging alongside error explanation when questions are enabled", () =>
-    Effect.gen(function* () {
-      const registry = yield* ToolRegistry.Service
-      const ids = yield* registry.ids()
+  it.instance(
+    "exposes guided debugging alongside error explanation and the testing strategy when questions are enabled",
+    () =>
+      Effect.gen(function* () {
+        const registry = yield* ToolRegistry.Service
+        const ids = yield* registry.ids()
 
-      expect(ids).toContain("guided_debug")
-      expect(ids).toContain("explain_error")
-    }),
+        expect(ids).toContain("guided_debug")
+        expect(ids).toContain("explain_error")
+        expect(ids).toContain("testing_strategy")
+      }),
   )
 
   it.instance("does not expose task_status", () =>
