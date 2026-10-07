@@ -24,6 +24,6 @@ This feature was built by Team T1 over two sprints. Each member owned one part, 
 
 **@akkubais: Testing strategy (#6).** _Description of the testing strategy and a link to its tests._
 
-**@hlabda: Guided debugging flow (#7).** _Description of the guided debugging flow and a link to its tests._
+**@hlabda: Guided debugging flow (#7).** Added the `guided_debug` tool using OpenCode's existing question service. It presents the error explanation and testing strategy in separate steps, lets the student keep investigating at either step, and permits presenting a proposed fix only after the student chooses to continue. It inherits question-denial permissions and can be disabled independently. Tests cover the [main flow and both stop paths](packages/opencode/test/tool/guided-debug.test.ts), [permissions](packages/opencode/test/permission/next.test.ts), [tool registration](packages/opencode/test/tool/registry.test.ts), and CLI question [cleanup](packages/opencode/test/cli/run/session-data.test.ts) and [recovery](packages/opencode/test/cli/run/stream.transport.test.ts).
 
 **@a-belard: Response format (#9).** _Description of the response format and a link to its tests._
