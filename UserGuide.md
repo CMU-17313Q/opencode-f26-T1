@@ -22,7 +22,7 @@ This feature was built by Team T1 over two sprints. Each member owned one part, 
 
 **@belamigw: Error explanation (#5).** Added the `explain_error` tool. When something fails, it finds the error that just happened, picks out the file, line and error message, and rates how sure it is, so OpenCode can explain the cause without giving the fix. Tests in [`packages/opencode/test/tool/explain-error.test.ts`](packages/opencode/test/tool/explain-error.test.ts) check that it uses only the latest failure, finds the right file, never includes a fix, and is unsure when the error is unclear.
 
-**@akkubais: Testing strategy (#6).** _Description of the testing strategy and a link to its tests._
+**@akkubais: Testing strategy (#6).** Added the TestingStrategy builder. It uses the proposed change and available error context to recommend relevant normal, edge, and failure tests, explains why each test is useful, and keeps completed tests separate from recommendations. Tests in packages/opencode/test/session/testing-strategy.test.ts check relevant recommendations, evidence-backed results, incomplete context, edge-case detection, and readable multiline errors.
 
 **@hlabda: Guided debugging flow (#7).** _Description of the guided debugging flow and a link to its tests._
 
