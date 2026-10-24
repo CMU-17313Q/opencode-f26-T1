@@ -28,4 +28,4 @@ jobs:
             cd "$HOME/${{ secrets.REPO_NAME }}"
             git pull --ff-only origin main
             docker compose up -d --build --remove-orphans
-            curl --fail --retry 12 --retry-delay 5 --retry-connrefused http://127.0.0.1:4096/ > /dev/null
+            curl --fail --retry 12 --retry-all-errors --retry-delay 5 --retry-connrefused http://127.0.0.1:4096/ > /dev/null
