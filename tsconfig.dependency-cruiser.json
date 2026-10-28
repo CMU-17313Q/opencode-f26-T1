@@ -1,0 +1,6 @@
+{
+  "extends": "./packages/opencode/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./packages/opencode"
+  }
+}

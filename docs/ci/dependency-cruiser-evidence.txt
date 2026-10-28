@@ -1,0 +1,39 @@
+Dependency-cruiser verification evidence
+Recorded: 2026-10-28
+Source revision: 7e471f57f2eff475bd507046d9c869d85d20bef6 + dependency-cruiser implementation
+Node.js: v26.8.1
+Bun: 1.3.14
+dependency-cruiser: 18.7.0
+Scope: static runtime imports in packages/opencode/src
+
+$ bun run verify:dependencies
+✔ accepts acyclic runtime imports (455.16425ms)
+✔ rejects a runtime cycle with a nonzero CLI exit (350.625875ms)
+✔ resolves TypeScript aliases and rejects a three-module cycle (333.037041ms)
+✔ accepts a cycle broken by an erased type-only import (318.924709ms)
+✔ accepts a loop closed only by a lazy dynamic import (320.548917ms)
+✔ a dynamic import does not hide a separate static cycle (322.137042ms)
+✔ accepts the repository's intentional namespace self-reexport (316.075042ms)
+✔ still rejects runtime cycles when the modules self-reexport (316.841208ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2784.161792
+
+$ bun run --cwd packages/opencode verify:dependencies
+$ node --test script/verify-dependency-cruiser.mjs
+
+Exit code: 0
+
+$ bun run check:dependencies
+
+✔ no dependency violations found (406 modules, 1527 dependencies cruised)
+
+
+$ depcruise --config .dependency-cruiser.cjs --output-type err packages/opencode/src
+
+Exit code: 0
