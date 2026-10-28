@@ -74,6 +74,13 @@ integration tasks. A separate push workflow does not automatically wait for this
 job; the deployment owner must explicitly connect them before the final group
 pipeline run. This change does not alter deployment or branch protection.
 
+The first CI runs also exposed an intermittent installation failure:
+`tree-sitter-powershell` invokes `node-gyp-build`, which could not find the
+`node-gyp` executable on the runner. `node-gyp` 12.3.0 was already present as a
+transitive dependency in the lockfile. Declaring that same version as a root
+development dependency makes its executable available during native install
+scripts without changing the application's dependency versions.
+
 ## Upkeep
 
 Keep the dependency version pinned, review resolver changes alongside the
