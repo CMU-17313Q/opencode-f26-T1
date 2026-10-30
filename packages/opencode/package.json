@@ -8,6 +8,7 @@
   "scripts": {
     "typecheck": "tsgo --noEmit",
     "test": "bun test --timeout 30000 --only-failures",
+    "verify:dependencies": "node --test script/verify-dependency-cruiser.mjs",
     "test:properties": "bun test --timeout 30000 test/session/error-context.property.test.ts",
     "test:httpapi": "bun run script/httpapi-exercise.ts --mode coverage --fail-on-missing --fail-on-skip && bun run script/httpapi-exercise.ts --mode auth --fail-on-missing --fail-on-skip && bun run script/httpapi-exercise.ts --mode effect --fail-on-missing --fail-on-skip",
     "bench:test": "bun run script/bench-test-suite.ts",
