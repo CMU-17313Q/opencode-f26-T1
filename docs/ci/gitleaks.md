@@ -13,11 +13,20 @@ Any finding fails the job.
 - `.gitleaks.toml` extends the default rules with narrow allowlists for reviewed
   false positives.
 
-Run locally:
+Run locally from the repo root. Install Gitleaks with one of:
+
+- macOS: `brew install gitleaks`
+- Linux / Windows: download the v8.30.1 binary from the
+  [releases page](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1) and add it to your `PATH`
 
 ```sh
-brew install gitleaks
 gitleaks git . --log-opts="--full-history HEAD" --redact --verbose
+```
+
+Or, with Docker on any OS (no install):
+
+```sh
+docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.30.1 git /repo --log-opts="--full-history HEAD" --redact --verbose
 ```
 
 If it finds a real secret: rotate it first, then remove it from the code. Only
