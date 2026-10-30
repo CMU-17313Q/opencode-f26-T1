@@ -1,0 +1,94 @@
+Fast-check property-based testing evidence
+Owner: Ahmad (@Ahmed120515)
+Recorded: 2026-10-30
+Base revision: 7e471f57f2eff475bd507046d9c869d85d20bef6
+Bun: 1.3.14
+Node.js: v24.22.1
+fast-check: 4.8.0 (pinned direct development dependency)
+Scope: ErrorContext.collect and ErrorContext.latest
+
+Local dependency setup:
+The normal install reached a native tree-sitter-powershell build but failed
+while extracting Node headers (EINVAL: invalid argument, fchown). This is a
+local filesystem issue. A frozen-lockfile install with --ignore-scripts then
+succeeded and linked the declared fast-check dependency. The repository's
+shared setup action and normal install are retained in CI.
+
+$ bun install --frozen-lockfile --ignore-scripts
+Checked 2429 installs across 2708 packages (no changes) [14.66s]
+Exit code: 0
+
+$ cd packages/opencode
+$ FAST_CHECK_SEED=17313 bun test --timeout 30000 test/session/error-context.test.ts test/session/error-context.property.test.ts
+bun test v1.3.14 (0d9b296a)
+
+test/session/error-context.test.ts:
+(pass) error context > captures a tool error and its input [0.43ms]
+(pass) error context > captures completed shell failures and prefers full output [0.05ms]
+(pass) error context > preserves available output on tool errors [0.03ms]
+(pass) error context > does not infer failure from invalid or successful exit %s [0.03ms]
+(pass) error context > does not infer failure from invalid or successful exit %s
+(pass) error context > does not infer failure from invalid or successful exit %s
+(pass) error context > does not infer failure from invalid or successful exit 1
+(pass) error context > does not infer failure from invalid or successful exit %s
+(pass) error context > does not infer failure from invalid or successful exit %s
+(pass) error context > does not infer failure from invalid or successful exit %s [0.04ms]
+(pass) error context > ignores pending tools [0.02ms]
+(pass) error context > ignores running tools [0.05ms]
+(pass) error context > ignores interrupted tool errors [0.09ms]
+(pass) error context > does not interpret another tool's exit metadata as shell failure [0.13ms]
+(pass) error context > handles incomplete parts:  [0.04ms]
+(pass) error context > handles incomplete parts: null
+(pass) error context > handles incomplete parts: {} [0.02ms]
+(pass) error context > handles incomplete parts: {"type":"tool"}
+(pass) error context > handles incomplete parts: {"type":"tool","state":null}
+(pass) error context > ignores an array instead of a tool part [0.02ms]
+(pass) error context > retains an explicit failure with missing details [0.04ms]
+(pass) error context > uses only the latest user task and its file context [0.29ms]
+(pass) error context > does not fall back to an older task when the latest user message has no text [0.03ms]
+
+test/session/error-context.property.test.ts:
+fast-check error-context: seed=17313, numRuns=500 per property
+(pass) error context properties > preserves explicit failures and prefers full output over metadata output [92.79ms]
+(pass) error context properties > captures completed shell calls for every generated nonzero integer exit [9.01ms]
+(pass) error context properties > ignores unfinished tools, successful shells, and completed non-shell tools [10.32ms]
+(pass) error context properties > does not infer shell failure from invalid exit metadata [10.10ms]
+(pass) error context properties > ignores interrupted errors regardless of their error details [56.90ms]
+(pass) error context properties > uses the latest user context and excludes synthetic and ignored text [99.01ms]
+(pass) error context properties > adds the input file once and preserves existing file context [6.36ms]
+(pass) error context properties > latest selects the last failure without borrowing context from later messages [43.91ms]
+(pass) error context properties > a nonblank pasted error takes precedence over generated tool failures [168.05ms]
+(pass) error context properties > handles arbitrary JSON parts and histories without throwing or mutating inputs [142.60ms]
+
+ 33 pass
+ 0 fail
+ 6524 expect() calls
+Ran 33 tests across 2 files. [3.24s]
+
+Exit code: 0
+Generated cases: 10 properties x 500 = 5,000 (plus 23 existing example tests)
+
+$ bun typecheck
+$ tsgo --noEmit
+Exit code: 0
+
+$ node_modules/.bin/oxlint packages/opencode/test/session/error-context.property.test.ts
+Found 0 warnings and 0 errors.
+Exit code: 0
+
+Negative controls (temporary local source edits, restored afterward):
+1. Removing the nonzero-exit condition incorrectly treated successful shells as
+   failures. The "ignores unfinished tools, successful shells, and completed
+   non-shell tools" property failed, and Bun returned exit code 1.
+2. Replacing the latest-user search with an oldest-user search caused the
+   "uses the latest user context" property to fail, and Bun returned exit code 1.
+Both failures included fast-check's seed, shrinking path, and counterexample.
+These are deliberately introduced regressions, not bugs found in the original
+implementation. No production source edits are part of this change. The final
+33-test passing run above was performed after restoration.
+
+CI evidence:
+Not yet run: the connected GitHub app rejected branch creation with HTTP 403,
+and this workspace has no Git push credentials. After publishing the branch,
+link a successful Fast-check run and its fast-check-evidence artifact in the PR.
+CI installs normally with --frozen-lockfile and runs bun run test:properties.
