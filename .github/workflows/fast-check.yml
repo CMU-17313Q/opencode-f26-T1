@@ -1,0 +1,44 @@
+name: Fast-check
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fast-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  properties:
+    name: Error-context properties
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Setup Bun and install dependencies
+        uses: ./.github/actions/setup-bun
+        with:
+          install-flags: --frozen-lockfile
+
+      - name: Run property-based tests
+        working-directory: packages/opencode
+        run: |
+          set -o pipefail
+          bun run test:properties 2>&1 | tee fast-check-results.txt
+
+      - name: Upload fast-check evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: fast-check-evidence
+          path: packages/opencode/fast-check-results.txt
+          if-no-files-found: ignore
+          retention-days: 30
