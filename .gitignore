@@ -7,3 +7,7 @@ coverage-html
 .qlty
 packages/sdk/js/tsconfig.tsbuildinfo
 test-results/.last-run.json
+/bun-audit-results.json
+/bun-audit-errors.txt
+/bun-audit-summary.json
+/bun-audit-policy.txt
