@@ -10,6 +10,8 @@
     "test": "bun test --timeout 30000 --only-failures",
     "verify:dependencies": "node --test script/verify-dependency-cruiser.mjs",
     "test:properties": "bun test --timeout 30000 test/session/error-context.property.test.ts",
+    "test:coverage": "bun test --coverage --coverage-reporter=text --timeout 30000 test/session/error-context.test.ts test/session/error-explanation.test.ts test/session/testing-strategy.test.ts test/tool/explain-error.test.ts test/tool/testing-strategy.test.ts test/tool/guided-debug.test.ts test/tool/guided-debugging-flow.test.ts",
+    "coverage:gate": "node script/check-coverage.mjs coverage.txt",
     "test:httpapi": "bun run script/httpapi-exercise.ts --mode coverage --fail-on-missing --fail-on-skip && bun run script/httpapi-exercise.ts --mode auth --fail-on-missing --fail-on-skip && bun run script/httpapi-exercise.ts --mode effect --fail-on-missing --fail-on-skip",
     "bench:test": "bun run script/bench-test-suite.ts",
     "profile:test": "bun run script/profile-test-files.ts",
