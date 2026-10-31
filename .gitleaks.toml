@@ -1,0 +1,67 @@
+title = "opencode-f26-T1 Gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Documentation placeholders such as YOUR_API_KEY"
+targetRules = ["curl-auth-header"]
+regexes = ['''^YOUR_[A-Z0-9_]+$''']
+
+[[allowlists]]
+description = "Fake keys that the HTTP recorder redaction tests must detect"
+targetRules = ["generic-api-key", "gcp-api-key"]
+condition = "AND"
+paths = ['''^packages/http-recorder/test/''']
+regexes = [
+  '''^sk-123456789012345678901234$''',
+  '''^AIzaSyDHibiBRvJZLsFnPYPoiTwxY4ztQ55yqCE$''',
+]
+
+[[allowlists]]
+description = "Stripe publishable test keys are meant to ship in client code"
+targetRules = ["generic-api-key"]
+regexes = ['''^pk_test_[0-9A-Za-z]+$''']
+
+[[allowlists]]
+description = "DigitalOcean OAuth client ID is public in the browser authorize URL"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''^packages/opencode/src/plugin/digitalocean\.ts$''']
+regexTarget = "match"
+regexes = ['''^DO_OAUTH_CLIENT_ID = "''']
+
+[[allowlists]]
+description = "Keyboard shortcut strings such as shift+alt+arrowup"
+targetRules = ["generic-api-key"]
+regexes = ['''^(?:shift|ctrl|alt|mod|meta|cmd)(?:\+[a-z0-9]+)+$''']
+
+[[allowlists]]
+description = "Dotted translation keys in console i18n files"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''^packages/console/app/src/i18n/[a-z]+\.ts$''']
+regexes = ['''^[a-z0-9]+(?:\.[A-Za-z0-9]+)+$''']
+
+[[allowlists]]
+description = "Part IDs used as e2e fixtures"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''^packages/app/e2e/''']
+regexes = ['''^prt_[a-z0-9_]+$''']
+
+[[allowlists]]
+description = "Parameter names in the generated SDK"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''^packages/sdk/js/src/v2/gen/''']
+regexTarget = "match"
+regexes = ['''^key: "[A-Za-z][A-Za-z0-9]*"$''']
+
+[[allowlists]]
+description = "Unquoted TypeScript type references, which cannot hold a literal secret"
+targetRules = ["generic-api-key"]
+condition = "AND"
+paths = ['''\.tsx?$''']
+regexTarget = "match"
+regexes = ['''^key: [A-Z][A-Za-z0-9]*$''']
