@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "meaning": "No high or critical findings outside the temporary baseline",
+  "owner": "akkubais",
+  "expires": "2026-11-14",
+  "totalAdvisoryEntries": 432,
+  "highOrCriticalEntries": 175,
+  "inheritedEntries": 175,
+  "obsoleteBaselineEntries": 0,
+  "unexpected": []
+}

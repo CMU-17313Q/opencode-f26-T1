@@ -1,0 +1,17 @@
+bun test v1.3.14 (0d9b296a)
+
+bun-audit.test.ts:
+(pass) reports inherited vulnerabilities while passing only the approved snapshot [11.74ms]
+(pass) rejects new high findings and severity escalation [0.27ms]
+(pass) rejects changed installed versions even for the same advisory [0.07ms]
+(pass) keeps new low and moderate findings visible without blocking [0.19ms]
+(pass) allows removed findings and identifies obsolete baseline entries [0.04ms]
+(pass) fails expired entries on the expiry date [13.33ms]
+(pass) fails malformed reports, unknown severities, and error responses [2.12ms]
+(pass) fails network errors, empty failure reports, and mismatched statuses [0.14ms]
+(pass) fails invalid baseline metadata and unmapped packages [0.09ms]
+
+ 9 pass
+ 0 fail
+ 26 expect() calls
+Ran 9 tests across 1 file. [358.00ms]

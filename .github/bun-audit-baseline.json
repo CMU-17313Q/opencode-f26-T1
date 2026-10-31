@@ -1,0 +1,1431 @@
+{
+  "schemaVersion": 1,
+  "owner": "akkubais",
+  "reason": "User-approved temporary baseline of inherited dependency advisories at bed3fc488969c381b8676e402af3151098256c8e. These remain unresolved risks requiring exposure review and remediation; they are not false positives or a clean scan.",
+  "created": "2026-10-31",
+  "expires": "2026-11-14",
+  "sourceCommit": "bed3fc488969c381b8676e402af3151098256c8e",
+  "findings": [
+    {
+      "package": "@astrojs/cloudflare",
+      "id": 1107267,
+      "url": "https://github.com/advisories/GHSA-qpr4-c339-7vq8",
+      "vulnerable_versions": ">=11.0.3 <12.6.6",
+      "severity": "high",
+      "versions": ["@astrojs/cloudflare@12.6.3"]
+    },
+    {
+      "package": "@fastify/busboy",
+      "id": 1240982,
+      "url": "https://github.com/advisories/GHSA-x8mw-p69m-v3mx",
+      "vulnerable_versions": ">=1.0.0 <3.2.1",
+      "severity": "high",
+      "versions": ["@fastify/busboy@2.1.1"]
+    },
+    {
+      "package": "@modelcontextprotocol/sdk",
+      "id": 1241339,
+      "url": "https://github.com/advisories/GHSA-6qxp-vccf-f47h",
+      "vulnerable_versions": ">=1.12.0 <1.31.0",
+      "severity": "high",
+      "versions": ["@modelcontextprotocol/sdk@1.29.0"]
+    },
+    {
+      "package": "@modelcontextprotocol/sdk",
+      "id": 1242628,
+      "url": "https://github.com/advisories/GHSA-22jm-h49p-29qw",
+      "vulnerable_versions": ">=1.24.0 <1.32.0",
+      "severity": "high",
+      "versions": ["@modelcontextprotocol/sdk@1.29.0"]
+    },
+    {
+      "package": "@modelcontextprotocol/sdk",
+      "id": 1242649,
+      "url": "https://github.com/advisories/GHSA-46jr-4wx8-v453",
+      "vulnerable_versions": ">=1.3.0 <1.32.0",
+      "severity": "high",
+      "versions": ["@modelcontextprotocol/sdk@1.29.0"]
+    },
+    {
+      "package": "@modelcontextprotocol/sdk",
+      "id": 1243488,
+      "url": "https://github.com/advisories/GHSA-f897-62hf-6gxq",
+      "vulnerable_versions": ">=1.10.0 <1.30.1",
+      "severity": "high",
+      "versions": ["@modelcontextprotocol/sdk@1.29.0"]
+    },
+    {
+      "package": "@remix-run/router",
+      "id": 1112052,
+      "url": "https://github.com/advisories/GHSA-2w69-qvjg-hvjx",
+      "vulnerable_versions": "<=1.23.1",
+      "severity": "high",
+      "versions": ["@remix-run/router@1.9.0"]
+    },
+    {
+      "package": "@storybook/addon-vitest",
+      "id": 1242747,
+      "url": "https://github.com/advisories/GHSA-f2ph-cmg5-wxc8",
+      "vulnerable_versions": ">=10.0.0 <10.6.2",
+      "severity": "critical",
+      "versions": ["@storybook/addon-vitest@10.4.1"]
+    },
+    {
+      "package": "@storybook/addon-vitest",
+      "id": 1242868,
+      "url": "https://github.com/advisories/GHSA-px85-f4q5-jh77",
+      "vulnerable_versions": ">=10.0.0 <10.6.2",
+      "severity": "high",
+      "versions": ["@storybook/addon-vitest@10.4.1"]
+    },
+    {
+      "package": "@xmldom/xmldom",
+      "id": 1193689,
+      "url": "https://github.com/advisories/GHSA-w2rr-34g9-rvrj",
+      "vulnerable_versions": ">=0.7.0 <=0.8.13",
+      "severity": "high",
+      "versions": ["@xmldom/xmldom@0.8.13"]
+    },
+    {
+      "package": "@xmldom/xmldom",
+      "id": 1193692,
+      "url": "https://github.com/advisories/GHSA-4w3w-2rp5-g8jm",
+      "vulnerable_versions": ">=0.7.0 <=0.8.13",
+      "severity": "high",
+      "versions": ["@xmldom/xmldom@0.8.13"]
+    },
+    {
+      "package": "@xmldom/xmldom",
+      "id": 1193696,
+      "url": "https://github.com/advisories/GHSA-c7q8-3ch8-vqpv",
+      "vulnerable_versions": ">=0.7.0 <=0.8.14",
+      "severity": "high",
+      "versions": ["@xmldom/xmldom@0.8.13"]
+    },
+    {
+      "package": "@xmldom/xmldom",
+      "id": 1193700,
+      "url": "https://github.com/advisories/GHSA-27p8-2357-5qqv",
+      "vulnerable_versions": ">=0.7.0 <=0.8.14",
+      "severity": "high",
+      "versions": ["@xmldom/xmldom@0.8.13"]
+    },
+    {
+      "package": "@xmldom/xmldom",
+      "id": 1193708,
+      "url": "https://github.com/advisories/GHSA-8344-3jmq-59r6",
+      "vulnerable_versions": ">=0.7.0 <=0.8.14",
+      "severity": "high",
+      "versions": ["@xmldom/xmldom@0.8.13"]
+    },
+    {
+      "package": "@xmldom/xmldom",
+      "id": 1193709,
+      "url": "https://github.com/advisories/GHSA-x4fp-j954-r2f4",
+      "vulnerable_versions": ">=0.7.0 <=0.8.14",
+      "severity": "high",
+      "versions": ["@xmldom/xmldom@0.8.13"]
+    },
+    {
+      "package": "@xmldom/xmldom",
+      "id": 1193712,
+      "url": "https://github.com/advisories/GHSA-965w-775f-mr7g",
+      "vulnerable_versions": ">=0.7.0 <=0.8.14",
+      "severity": "high",
+      "versions": ["@xmldom/xmldom@0.8.13"]
+    },
+    {
+      "package": "@xmldom/xmldom",
+      "id": 1193715,
+      "url": "https://github.com/advisories/GHSA-93r5-fhx6-vmg9",
+      "vulnerable_versions": ">=0.7.0 <=0.8.14",
+      "severity": "high",
+      "versions": ["@xmldom/xmldom@0.8.13"]
+    },
+    {
+      "package": "app-builder-lib",
+      "id": 1124279,
+      "url": "https://github.com/advisories/GHSA-7g7r-gx96-252g",
+      "vulnerable_versions": "<26.15.0",
+      "severity": "high",
+      "versions": ["app-builder-lib@26.15.2", "app-builder-lib@26.8.1"]
+    },
+    {
+      "package": "astro",
+      "id": 1109850,
+      "url": "https://github.com/advisories/GHSA-wrwg-2hg8-v723",
+      "vulnerable_versions": "<=5.15.6",
+      "severity": "high",
+      "versions": ["astro@5.7.13"]
+    },
+    {
+      "package": "astro",
+      "id": 1139377,
+      "url": "https://github.com/advisories/GHSA-2pvr-wf23-7pc7",
+      "vulnerable_versions": "<6.4.6",
+      "severity": "high",
+      "versions": ["astro@5.7.13"]
+    },
+    {
+      "package": "astro",
+      "id": 1139378,
+      "url": "https://github.com/advisories/GHSA-8hv8-536x-4wqp",
+      "vulnerable_versions": "<6.3.3",
+      "severity": "high",
+      "versions": ["astro@5.7.13"]
+    },
+    {
+      "package": "astro",
+      "id": 1193723,
+      "url": "https://github.com/advisories/GHSA-26w7-cxv4-gfx2",
+      "vulnerable_versions": "<7.2.8",
+      "severity": "critical",
+      "versions": ["astro@5.7.13"]
+    },
+    {
+      "package": "axios",
+      "id": 1153178,
+      "url": "https://github.com/advisories/GHSA-gcfj-64vw-6mp9",
+      "vulnerable_versions": ">=1.15.2 <1.18.0",
+      "severity": "high",
+      "versions": ["axios@1.16.1"]
+    },
+    {
+      "package": "axios",
+      "id": 1240603,
+      "url": "https://github.com/advisories/GHSA-c29m-xwm3-cm6r",
+      "vulnerable_versions": ">=1.16.1 <1.20.0",
+      "severity": "high",
+      "versions": ["axios@1.16.1"]
+    },
+    {
+      "package": "axios",
+      "id": 1240604,
+      "url": "https://github.com/advisories/GHSA-mghh-pgcx-3jjj",
+      "vulnerable_versions": ">=1.15.0 <1.20.0",
+      "severity": "high",
+      "versions": ["axios@1.16.1"]
+    },
+    {
+      "package": "axios",
+      "id": 1240605,
+      "url": "https://github.com/advisories/GHSA-x97p-jq2g-jp4f",
+      "vulnerable_versions": ">=1.15.1 <1.20.0",
+      "severity": "high",
+      "versions": ["axios@1.16.1"]
+    },
+    {
+      "package": "axios",
+      "id": 1240607,
+      "url": "https://github.com/advisories/GHSA-3pq3-5fj3-cg6v",
+      "vulnerable_versions": ">=1.13.0 <1.20.0",
+      "severity": "high",
+      "versions": ["axios@1.16.1"]
+    },
+    {
+      "package": "axios",
+      "id": 1240608,
+      "url": "https://github.com/advisories/GHSA-542g-h47m-68v8",
+      "vulnerable_versions": ">=1.13.0 <1.20.0",
+      "severity": "high",
+      "versions": ["axios@1.16.1"]
+    },
+    {
+      "package": "axios",
+      "id": 1240628,
+      "url": "https://github.com/advisories/GHSA-m8m8-qj5v-23w3",
+      "vulnerable_versions": ">=1.15.2 <1.20.0",
+      "severity": "high",
+      "versions": ["axios@1.16.1"]
+    },
+    {
+      "package": "body-parser",
+      "id": 1243073,
+      "url": "https://github.com/advisories/GHSA-27r3-jxmh-p828",
+      "vulnerable_versions": "<1.20.9",
+      "severity": "high",
+      "versions": ["body-parser@1.20.5", "body-parser@2.2.2"]
+    },
+    {
+      "package": "body-parser",
+      "id": 1243074,
+      "url": "https://github.com/advisories/GHSA-27r3-jxmh-p828",
+      "vulnerable_versions": ">=2.0.0 <2.4.0",
+      "severity": "high",
+      "versions": ["body-parser@1.20.5", "body-parser@2.2.2"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1123896,
+      "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+      "vulnerable_versions": ">=2.0.0 <2.1.2",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1123897,
+      "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+      "vulnerable_versions": "<1.1.16",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1123898,
+      "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+      "vulnerable_versions": ">=3.0.0 <5.0.7",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1130588,
+      "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+      "vulnerable_versions": "<1.1.17",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1130589,
+      "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+      "vulnerable_versions": ">=2.0.0 <2.1.3",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1130591,
+      "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+      "vulnerable_versions": ">=4.0.0 <5.0.8",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1130734,
+      "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+      "vulnerable_versions": ">=4.0.0 <5.0.9",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1130736,
+      "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+      "vulnerable_versions": ">=2.0.0 <2.1.4",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1130737,
+      "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+      "vulnerable_versions": "<1.1.18",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1240104,
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "vulnerable_versions": "<1.1.20",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1240105,
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "vulnerable_versions": ">=2.0.0 <2.1.6",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1240107,
+      "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+      "vulnerable_versions": ">=4.0.0 <5.0.11",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1240108,
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "vulnerable_versions": "<1.1.19",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1240109,
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "vulnerable_versions": ">=2.0.0 <2.1.5",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "brace-expansion",
+      "id": 1240111,
+      "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+      "vulnerable_versions": ">=4.0.0 <5.0.10",
+      "severity": "high",
+      "versions": ["brace-expansion@1.1.15", "brace-expansion@2.1.1", "brace-expansion@5.0.6"]
+    },
+    {
+      "package": "browserslist",
+      "id": 1153171,
+      "url": "https://github.com/advisories/GHSA-c83g-rgw3-j3cx",
+      "vulnerable_versions": "<=4.28.6",
+      "severity": "high",
+      "versions": ["browserslist@4.28.2"]
+    },
+    {
+      "package": "browserslist",
+      "id": 1153172,
+      "url": "https://github.com/advisories/GHSA-73wf-gq98-2v4g",
+      "vulnerable_versions": "<=4.28.6",
+      "severity": "high",
+      "versions": ["browserslist@4.28.2"]
+    },
+    {
+      "package": "builder-util-runtime",
+      "id": 1124278,
+      "url": "https://github.com/advisories/GHSA-p2f4-r6v6-j797",
+      "vulnerable_versions": "<9.7.0",
+      "severity": "high",
+      "versions": ["builder-util-runtime@9.5.1", "builder-util-runtime@9.7.0"]
+    },
+    {
+      "package": "devalue",
+      "id": 1240870,
+      "url": "https://github.com/advisories/GHSA-j22f-vq7h-c4qm",
+      "vulnerable_versions": ">=5.1.0 <=5.9.2",
+      "severity": "high",
+      "versions": ["devalue@5.8.1"]
+    },
+    {
+      "package": "devalue",
+      "id": 1240872,
+      "url": "https://github.com/advisories/GHSA-mcm9-63f2-9j32",
+      "vulnerable_versions": "<=5.9.2",
+      "severity": "high",
+      "versions": ["devalue@5.8.1"]
+    },
+    {
+      "package": "devalue",
+      "id": 1240874,
+      "url": "https://github.com/advisories/GHSA-x5rw-q4pp-hg5g",
+      "vulnerable_versions": ">=5.8.0 <=5.9.2",
+      "severity": "high",
+      "versions": ["devalue@5.8.1"]
+    },
+    {
+      "package": "devalue",
+      "id": 1242362,
+      "url": "https://github.com/advisories/GHSA-r9w8-h9r3-54w4",
+      "vulnerable_versions": "<=5.9.2",
+      "severity": "high",
+      "versions": ["devalue@5.8.1"]
+    },
+    {
+      "package": "dompurify",
+      "id": 1242881,
+      "url": "https://github.com/advisories/GHSA-mrv2-3pqr-j5jr",
+      "vulnerable_versions": "<=3.4.16",
+      "severity": "high",
+      "versions": ["dompurify@3.3.1"]
+    },
+    {
+      "package": "electron",
+      "id": 1239972,
+      "url": "https://github.com/advisories/GHSA-hq2x-r82h-9wj4",
+      "vulnerable_versions": ">=42.0.0-alpha.1 <42.5.2",
+      "severity": "high",
+      "versions": ["electron@42.3.3"]
+    },
+    {
+      "package": "electron",
+      "id": 1239976,
+      "url": "https://github.com/advisories/GHSA-gr2m-v5gq-v685",
+      "vulnerable_versions": ">=42.0.0-alpha.1 <42.9.2",
+      "severity": "high",
+      "versions": ["electron@42.3.3"]
+    },
+    {
+      "package": "electron",
+      "id": 1239980,
+      "url": "https://github.com/advisories/GHSA-j84w-jfhq-vhvj",
+      "vulnerable_versions": ">=42.0.0-alpha.1 <42.9.2",
+      "severity": "high",
+      "versions": ["electron@42.3.3"]
+    },
+    {
+      "package": "electron",
+      "id": 1239988,
+      "url": "https://github.com/advisories/GHSA-qmv3-fv6v-rmhq",
+      "vulnerable_versions": ">=42.3.3 <42.10.0",
+      "severity": "high",
+      "versions": ["electron@42.3.3"]
+    },
+    {
+      "package": "electron",
+      "id": 1241656,
+      "url": "https://github.com/advisories/GHSA-9qh4-3jw8-366w",
+      "vulnerable_versions": ">=42.0.0-alpha.1 <42.9.2",
+      "severity": "high",
+      "versions": ["electron@42.3.3"]
+    },
+    {
+      "package": "electron",
+      "id": 1243069,
+      "url": "https://github.com/advisories/GHSA-jr5w-w6x2-84p9",
+      "vulnerable_versions": "<42.11.16",
+      "severity": "high",
+      "versions": ["electron@42.3.3"]
+    },
+    {
+      "package": "extract-zip",
+      "id": 1139346,
+      "url": "https://github.com/advisories/GHSA-jmr9-qjv8-65gv",
+      "vulnerable_versions": "<=2.0.1",
+      "severity": "high",
+      "versions": ["extract-zip@2.0.1"]
+    },
+    {
+      "package": "extract-zip",
+      "id": 1193685,
+      "url": "https://github.com/advisories/GHSA-7pqw-9j4j-h8q3",
+      "vulnerable_versions": "<=2.0.1",
+      "severity": "high",
+      "versions": ["extract-zip@2.0.1"]
+    },
+    {
+      "package": "fast-uri",
+      "id": 1124064,
+      "url": "https://github.com/advisories/GHSA-v2hh-gcrm-f6hx",
+      "vulnerable_versions": ">=3.0.0 <=3.1.3",
+      "severity": "high",
+      "versions": ["fast-uri@3.1.2"]
+    },
+    {
+      "package": "fast-uri",
+      "id": 1130720,
+      "url": "https://github.com/advisories/GHSA-7p8r-x3mc-p8w7",
+      "vulnerable_versions": ">=3.0.0 <3.1.5",
+      "severity": "high",
+      "versions": ["fast-uri@3.1.2"]
+    },
+    {
+      "package": "fast-uri",
+      "id": 1158524,
+      "url": "https://github.com/advisories/GHSA-f65p-4m7j-42xc",
+      "vulnerable_versions": ">=3.0.0 <3.1.6",
+      "severity": "high",
+      "versions": ["fast-uri@3.1.2"]
+    },
+    {
+      "package": "fast-uri",
+      "id": 1158527,
+      "url": "https://github.com/advisories/GHSA-fph4-wmhf-6fwf",
+      "vulnerable_versions": ">=3.1.2 <3.1.6",
+      "severity": "high",
+      "versions": ["fast-uri@3.1.2"]
+    },
+    {
+      "package": "fast-uri",
+      "id": 1158530,
+      "url": "https://github.com/advisories/GHSA-jqff-g426-hqxp",
+      "vulnerable_versions": ">=3.0.0 <3.1.6",
+      "severity": "high",
+      "versions": ["fast-uri@3.1.2"]
+    },
+    {
+      "package": "fast-uri",
+      "id": 1204921,
+      "url": "https://github.com/advisories/GHSA-4c8g-83qw-93j6",
+      "vulnerable_versions": ">=3.0.0 <3.1.3",
+      "severity": "high",
+      "versions": ["fast-uri@3.1.2"]
+    },
+    {
+      "package": "fast-uri",
+      "id": 1239943,
+      "url": "https://github.com/advisories/GHSA-qw65-cvwx-89v3",
+      "vulnerable_versions": ">=3.0.0 <3.1.7",
+      "severity": "high",
+      "versions": ["fast-uri@3.1.2"]
+    },
+    {
+      "package": "fast-xml-parser",
+      "id": 1113153,
+      "url": "https://github.com/advisories/GHSA-37qj-frw5-hhjh",
+      "vulnerable_versions": ">=5.0.9 <=5.3.3",
+      "severity": "high",
+      "versions": ["fast-xml-parser@4.4.1", "fast-xml-parser@5.2.5", "fast-xml-parser@5.7.3"]
+    },
+    {
+      "package": "fast-xml-parser",
+      "id": 1113567,
+      "url": "https://github.com/advisories/GHSA-m7jm-9gc2-mpf2",
+      "vulnerable_versions": ">=4.1.3 <4.5.4",
+      "severity": "critical",
+      "versions": ["fast-xml-parser@4.4.1", "fast-xml-parser@5.2.5", "fast-xml-parser@5.7.3"]
+    },
+    {
+      "package": "fast-xml-parser",
+      "id": 1113568,
+      "url": "https://github.com/advisories/GHSA-m7jm-9gc2-mpf2",
+      "vulnerable_versions": ">=5.0.0 <5.3.5",
+      "severity": "critical",
+      "versions": ["fast-xml-parser@4.4.1", "fast-xml-parser@5.2.5", "fast-xml-parser@5.7.3"]
+    },
+    {
+      "package": "fast-xml-parser",
+      "id": 1113569,
+      "url": "https://github.com/advisories/GHSA-jmr7-xgp7-cmfj",
+      "vulnerable_versions": ">=5.0.0 <5.3.6",
+      "severity": "high",
+      "versions": ["fast-xml-parser@4.4.1", "fast-xml-parser@5.2.5", "fast-xml-parser@5.7.3"]
+    },
+    {
+      "package": "fast-xml-parser",
+      "id": 1113570,
+      "url": "https://github.com/advisories/GHSA-jmr7-xgp7-cmfj",
+      "vulnerable_versions": ">=4.1.3 <4.5.4",
+      "severity": "high",
+      "versions": ["fast-xml-parser@4.4.1", "fast-xml-parser@5.2.5", "fast-xml-parser@5.7.3"]
+    },
+    {
+      "package": "fast-xml-parser",
+      "id": 1115338,
+      "url": "https://github.com/advisories/GHSA-8gc5-j5rx-235r",
+      "vulnerable_versions": ">=4.0.0-beta.3 <4.5.5",
+      "severity": "high",
+      "versions": ["fast-xml-parser@4.4.1", "fast-xml-parser@5.2.5", "fast-xml-parser@5.7.3"]
+    },
+    {
+      "package": "fast-xml-parser",
+      "id": 1115339,
+      "url": "https://github.com/advisories/GHSA-8gc5-j5rx-235r",
+      "vulnerable_versions": ">=5.0.0 <5.5.6",
+      "severity": "high",
+      "versions": ["fast-xml-parser@4.4.1", "fast-xml-parser@5.2.5", "fast-xml-parser@5.7.3"]
+    },
+    {
+      "package": "fastify",
+      "id": 1240641,
+      "url": "https://github.com/advisories/GHSA-667r-xxjv-c9mm",
+      "vulnerable_versions": "<5.12.2",
+      "severity": "high",
+      "versions": ["fastify@5.8.5"]
+    },
+    {
+      "package": "fastify",
+      "id": 1240642,
+      "url": "https://github.com/advisories/GHSA-p68q-wchp-6fh7",
+      "vulnerable_versions": ">=4.0.0 <5.12.2",
+      "severity": "high",
+      "versions": ["fastify@5.8.5"]
+    },
+    {
+      "package": "fastify",
+      "id": 1240643,
+      "url": "https://github.com/advisories/GHSA-hwr6-493r-vm6h",
+      "vulnerable_versions": "<5.12.2",
+      "severity": "high",
+      "versions": ["fastify@5.8.5"]
+    },
+    {
+      "package": "fastify",
+      "id": 1240644,
+      "url": "https://github.com/advisories/GHSA-9q9j-q6p8-xq58",
+      "vulnerable_versions": "<5.12.2",
+      "severity": "high",
+      "versions": ["fastify@5.8.5"]
+    },
+    {
+      "package": "find-my-way",
+      "id": 1124273,
+      "url": "https://github.com/advisories/GHSA-c96f-x56v-gq3h",
+      "vulnerable_versions": "<=9.6.0",
+      "severity": "high",
+      "versions": ["find-my-way@9.6.0"]
+    },
+    {
+      "package": "follow-redirects",
+      "id": 1242604,
+      "url": "https://github.com/advisories/GHSA-q3jh-wrc6-jgq8",
+      "vulnerable_versions": ">=1.16.0 <1.16.1",
+      "severity": "high",
+      "versions": ["follow-redirects@1.16.0"]
+    },
+    {
+      "package": "follow-redirects",
+      "id": 1242605,
+      "url": "https://github.com/advisories/GHSA-8r9p-f939-6h3c",
+      "vulnerable_versions": ">=1.16.0 <1.16.1",
+      "severity": "high",
+      "versions": ["follow-redirects@1.16.0"]
+    },
+    {
+      "package": "follow-redirects",
+      "id": 1244003,
+      "url": "https://github.com/advisories/GHSA-mrwp-f3q8-3g9p",
+      "vulnerable_versions": ">=1.16.0 <=1.16.1",
+      "severity": "high",
+      "versions": ["follow-redirects@1.16.0"]
+    },
+    {
+      "package": "form-data",
+      "id": 1120743,
+      "url": "https://github.com/advisories/GHSA-hmw2-7cc7-3qxx",
+      "vulnerable_versions": ">=4.0.0 <4.0.6",
+      "severity": "high",
+      "versions": ["form-data@2.5.5", "form-data@4.0.5"]
+    },
+    {
+      "package": "form-data",
+      "id": 1120745,
+      "url": "https://github.com/advisories/GHSA-hmw2-7cc7-3qxx",
+      "vulnerable_versions": "<2.5.6",
+      "severity": "high",
+      "versions": ["form-data@2.5.5", "form-data@4.0.5"]
+    },
+    {
+      "package": "h3",
+      "id": 1115159,
+      "url": "https://github.com/advisories/GHSA-3vj8-jmxq-cgj5",
+      "vulnerable_versions": ">=2.0.0-0 <2.0.1-rc.15",
+      "severity": "high",
+      "versions": ["h3@1.15.11", "h3@2.0.1-rc.4", "h3@2.0.1-rc.5"]
+    },
+    {
+      "package": "h3",
+      "id": 1115162,
+      "url": "https://github.com/advisories/GHSA-22cc-p3c6-wpvm",
+      "vulnerable_versions": ">=2.0.0 <=2.0.1-rc.14",
+      "severity": "high",
+      "versions": ["h3@1.15.11", "h3@2.0.1-rc.4", "h3@2.0.1-rc.5"]
+    },
+    {
+      "package": "happy-dom",
+      "id": 1243084,
+      "url": "https://github.com/advisories/GHSA-834v-8h66-3h79",
+      "vulnerable_versions": ">=17.0.0 <=21.0.3",
+      "severity": "high",
+      "versions": ["happy-dom@20.9.0"]
+    },
+    {
+      "package": "happy-dom",
+      "id": 1243623,
+      "url": "https://github.com/advisories/GHSA-c8p4-j97h-3vg8",
+      "vulnerable_versions": "<=20.14.6",
+      "severity": "high",
+      "versions": ["happy-dom@20.9.0"]
+    },
+    {
+      "package": "hono",
+      "id": 1112134,
+      "url": "https://github.com/advisories/GHSA-3vhc-576x-3qv4",
+      "vulnerable_versions": "<4.11.4",
+      "severity": "high",
+      "versions": ["hono@4.10.7", "hono@4.12.23"]
+    },
+    {
+      "package": "hono",
+      "id": 1112135,
+      "url": "https://github.com/advisories/GHSA-f67f-6cw9-8mq4",
+      "vulnerable_versions": "<4.11.4",
+      "severity": "high",
+      "versions": ["hono@4.10.7", "hono@4.12.23"]
+    },
+    {
+      "package": "hono",
+      "id": 1114006,
+      "url": "https://github.com/advisories/GHSA-q5qw-h33p-qvwr",
+      "vulnerable_versions": "<4.12.4",
+      "severity": "high",
+      "versions": ["hono@4.10.7", "hono@4.12.23"]
+    },
+    {
+      "package": "hono",
+      "id": 1123999,
+      "url": "https://github.com/advisories/GHSA-88fw-hqm2-52qc",
+      "vulnerable_versions": "<4.12.25",
+      "severity": "high",
+      "versions": ["hono@4.10.7", "hono@4.12.23"]
+    },
+    {
+      "package": "ip-address",
+      "id": 1130722,
+      "url": "https://github.com/advisories/GHSA-mwp4-54f8-5fhr",
+      "vulnerable_versions": "<=10.3.0",
+      "severity": "high",
+      "versions": ["ip-address@10.2.0"]
+    },
+    {
+      "package": "js-yaml",
+      "id": 1123911,
+      "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+      "vulnerable_versions": ">=4.0.0 <4.3.0",
+      "severity": "high",
+      "versions": ["js-yaml@3.14.2", "js-yaml@4.1.1"]
+    },
+    {
+      "package": "js-yaml",
+      "id": 1123912,
+      "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+      "vulnerable_versions": ">=3.0.0 <3.15.0",
+      "severity": "high",
+      "versions": ["js-yaml@3.14.2", "js-yaml@4.1.1"]
+    },
+    {
+      "package": "js-yaml",
+      "id": 1138114,
+      "url": "https://github.com/advisories/GHSA-5p4m-2wfm-xmqj",
+      "vulnerable_versions": ">=3.0.0 <3.15.1",
+      "severity": "high",
+      "versions": ["js-yaml@3.14.2", "js-yaml@4.1.1"]
+    },
+    {
+      "package": "js-yaml",
+      "id": 1138115,
+      "url": "https://github.com/advisories/GHSA-5p4m-2wfm-xmqj",
+      "vulnerable_versions": ">=4.0.0 <4.3.1",
+      "severity": "high",
+      "versions": ["js-yaml@3.14.2", "js-yaml@4.1.1"]
+    },
+    {
+      "package": "js-yaml",
+      "id": 1193726,
+      "url": "https://github.com/advisories/GHSA-2883-xcg3-v3hh",
+      "vulnerable_versions": ">=3.0.0 <3.15.2",
+      "severity": "high",
+      "versions": ["js-yaml@3.14.2", "js-yaml@4.1.1"]
+    },
+    {
+      "package": "js-yaml",
+      "id": 1193727,
+      "url": "https://github.com/advisories/GHSA-2883-xcg3-v3hh",
+      "vulnerable_versions": ">=4.0.0 <4.3.2",
+      "severity": "high",
+      "versions": ["js-yaml@3.14.2", "js-yaml@4.1.1"]
+    },
+    {
+      "package": "minimatch",
+      "id": 1113466,
+      "url": "https://github.com/advisories/GHSA-3ppc-4f35-3m26",
+      "vulnerable_versions": ">=10.0.0 <10.2.1",
+      "severity": "high",
+      "versions": [
+        "minimatch@10.0.3",
+        "minimatch@10.2.5",
+        "minimatch@3.1.5",
+        "minimatch@5.1.9",
+        "minimatch@8.0.7",
+        "minimatch@9.0.9"
+      ]
+    },
+    {
+      "package": "minimatch",
+      "id": 1113545,
+      "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj",
+      "vulnerable_versions": ">=10.0.0 <10.2.3",
+      "severity": "high",
+      "versions": [
+        "minimatch@10.0.3",
+        "minimatch@10.2.5",
+        "minimatch@3.1.5",
+        "minimatch@5.1.9",
+        "minimatch@8.0.7",
+        "minimatch@9.0.9"
+      ]
+    },
+    {
+      "package": "minimatch",
+      "id": 1113553,
+      "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74",
+      "vulnerable_versions": ">=10.0.0 <10.2.3",
+      "severity": "high",
+      "versions": [
+        "minimatch@10.0.3",
+        "minimatch@10.2.5",
+        "minimatch@3.1.5",
+        "minimatch@5.1.9",
+        "minimatch@8.0.7",
+        "minimatch@9.0.9"
+      ]
+    },
+    {
+      "package": "mysql2",
+      "id": 1153173,
+      "url": "https://github.com/advisories/GHSA-3f6p-5ww8-9rcr",
+      "vulnerable_versions": "<3.22.0",
+      "severity": "high",
+      "versions": ["mysql2@3.14.4"]
+    },
+    {
+      "package": "nanoid",
+      "id": 1138811,
+      "url": "https://github.com/advisories/GHSA-28wg-ghj8-5hjv",
+      "vulnerable_versions": "<3.3.16",
+      "severity": "high",
+      "versions": ["nanoid@3.3.12"]
+    },
+    {
+      "package": "nanoid",
+      "id": 1139427,
+      "url": "https://github.com/advisories/GHSA-2v37-7h3g-55p8",
+      "vulnerable_versions": "<3.3.18",
+      "severity": "high",
+      "versions": ["nanoid@3.3.12"]
+    },
+    {
+      "package": "pacote",
+      "id": 1146559,
+      "url": "https://github.com/advisories/GHSA-w4pp-8pjf-rmxw",
+      "vulnerable_versions": ">=11.2.7 <21.5.1",
+      "severity": "high",
+      "versions": ["pacote@21.5.0"]
+    },
+    {
+      "package": "postcss",
+      "id": 1124252,
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "vulnerable_versions": "<=8.5.11",
+      "severity": "high",
+      "versions": ["postcss@8.4.31", "postcss@8.5.15"]
+    },
+    {
+      "package": "postcss",
+      "id": 1139510,
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "vulnerable_versions": "<=8.5.17",
+      "severity": "high",
+      "versions": ["postcss@8.4.31", "postcss@8.5.15"]
+    },
+    {
+      "package": "proxy-addr",
+      "id": 1241210,
+      "url": "https://github.com/advisories/GHSA-jqcg-44mw-7w3h",
+      "vulnerable_versions": ">=1.1.0 <2.0.8",
+      "severity": "critical",
+      "versions": ["proxy-addr@2.0.7"]
+    },
+    {
+      "package": "seroval",
+      "id": 1112482,
+      "url": "https://github.com/advisories/GHSA-66fc-rw6m-c2q6",
+      "vulnerable_versions": "<=1.4.0",
+      "severity": "high",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1112487,
+      "url": "https://github.com/advisories/GHSA-3rxj-6cgf-8cfw",
+      "vulnerable_versions": "<1.4.1",
+      "severity": "high",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1112488,
+      "url": "https://github.com/advisories/GHSA-hj76-42vx-jwp4",
+      "vulnerable_versions": "<1.4.1",
+      "severity": "high",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1112494,
+      "url": "https://github.com/advisories/GHSA-3j22-8qj3-26mx",
+      "vulnerable_versions": "<=1.4.0",
+      "severity": "high",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1119405,
+      "url": "https://github.com/advisories/GHSA-hx9m-jf43-8ffr",
+      "vulnerable_versions": ">=0.2.0 <=1.4.0",
+      "severity": "high",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1124299,
+      "url": "https://github.com/advisories/GHSA-mv8w-475r-vwqw",
+      "vulnerable_versions": "<=1.5.2",
+      "severity": "critical",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1241207,
+      "url": "https://github.com/advisories/GHSA-p6vx-979v-rg4c",
+      "vulnerable_versions": ">=0.12.0 <=1.6.0",
+      "severity": "critical",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1241208,
+      "url": "https://github.com/advisories/GHSA-jp82-f5mq-hwhp",
+      "vulnerable_versions": "<=1.6.2",
+      "severity": "high",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1243612,
+      "url": "https://github.com/advisories/GHSA-97r2-qh9m-474h",
+      "vulnerable_versions": "<=1.6.7",
+      "severity": "high",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "seroval",
+      "id": 1243614,
+      "url": "https://github.com/advisories/GHSA-7rv5-mrxv-xcr9",
+      "vulnerable_versions": "<=1.6.7",
+      "severity": "high",
+      "versions": ["seroval@1.3.2"]
+    },
+    {
+      "package": "sharp",
+      "id": 1124066,
+      "url": "https://github.com/advisories/GHSA-f88m-g3jw-g9cj",
+      "vulnerable_versions": "<0.35.0",
+      "severity": "high",
+      "versions": ["sharp@0.33.5"]
+    },
+    {
+      "package": "sharp",
+      "id": 1193725,
+      "url": "https://github.com/advisories/GHSA-rgj7-g3m4-5g8c",
+      "vulnerable_versions": "<0.35.4",
+      "severity": "high",
+      "versions": ["sharp@0.33.5"]
+    },
+    {
+      "package": "sharp",
+      "id": 1241331,
+      "url": "https://github.com/advisories/GHSA-wq5f-xc86-pv6w",
+      "vulnerable_versions": "<0.35.5",
+      "severity": "high",
+      "versions": ["sharp@0.33.5"]
+    },
+    {
+      "package": "smol-toml",
+      "id": 1193945,
+      "url": "https://github.com/advisories/GHSA-7w5x-hrqm-74c2",
+      "vulnerable_versions": "<=1.7.0",
+      "severity": "high",
+      "versions": ["smol-toml@1.6.1"]
+    },
+    {
+      "package": "socket.io-parser",
+      "id": 1130713,
+      "url": "https://github.com/advisories/GHSA-2m8v-j782-fhvr",
+      "vulnerable_versions": ">=4.0.0 <4.2.7",
+      "severity": "high",
+      "versions": ["socket.io-parser@4.2.6"]
+    },
+    {
+      "package": "source-map-js",
+      "id": 1241209,
+      "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+      "vulnerable_versions": ">=1.0.0 <1.2.2",
+      "severity": "high",
+      "versions": ["source-map-js@1.2.1"]
+    },
+    {
+      "package": "storybook",
+      "id": 1242753,
+      "url": "https://github.com/advisories/GHSA-f2ph-cmg5-wxc8",
+      "vulnerable_versions": ">=10.0.0 <10.6.2",
+      "severity": "critical",
+      "versions": ["storybook@10.4.1"]
+    },
+    {
+      "package": "storybook",
+      "id": 1242874,
+      "url": "https://github.com/advisories/GHSA-px85-f4q5-jh77",
+      "vulnerable_versions": ">=10.0.0 <10.6.2",
+      "severity": "high",
+      "versions": ["storybook@10.4.1"]
+    },
+    {
+      "package": "tar",
+      "id": 1123940,
+      "url": "https://github.com/advisories/GHSA-23hp-3jrh-7fpw",
+      "vulnerable_versions": "<=7.5.18",
+      "severity": "critical",
+      "versions": ["tar@7.5.15"]
+    },
+    {
+      "package": "tar",
+      "id": 1123941,
+      "url": "https://github.com/advisories/GHSA-8x88-c5mf-7j5w",
+      "vulnerable_versions": "<=7.5.17",
+      "severity": "high",
+      "versions": ["tar@7.5.15"]
+    },
+    {
+      "package": "tar",
+      "id": 1145647,
+      "url": "https://github.com/advisories/GHSA-r292-9mhp-454m",
+      "vulnerable_versions": "<=7.5.20",
+      "severity": "high",
+      "versions": ["tar@7.5.15"]
+    },
+    {
+      "package": "toml",
+      "id": 1164824,
+      "url": "https://github.com/advisories/GHSA-82x6-q7mm-w9cf",
+      "vulnerable_versions": "<4.2.0",
+      "severity": "high",
+      "versions": ["toml@4.1.1"]
+    },
+    {
+      "package": "toml",
+      "id": 1164825,
+      "url": "https://github.com/advisories/GHSA-v5mp-jgw5-2x6j",
+      "vulnerable_versions": "<4.1.2",
+      "severity": "high",
+      "versions": ["toml@4.1.1"]
+    },
+    {
+      "package": "toml",
+      "id": 1242862,
+      "url": "https://github.com/advisories/GHSA-4qx8-w7c3-pj3p",
+      "vulnerable_versions": "<=5.0.0",
+      "severity": "high",
+      "versions": ["toml@4.1.1"]
+    },
+    {
+      "package": "toml",
+      "id": 1242863,
+      "url": "https://github.com/advisories/GHSA-9j65-hcg3-gc64",
+      "vulnerable_versions": "<=5.0.0",
+      "severity": "high",
+      "versions": ["toml@4.1.1"]
+    },
+    {
+      "package": "toml",
+      "id": 1242864,
+      "url": "https://github.com/advisories/GHSA-9qmh-m7c6-f92p",
+      "vulnerable_versions": "<=5.0.0",
+      "severity": "high",
+      "versions": ["toml@4.1.1"]
+    },
+    {
+      "package": "undici",
+      "id": 1114591,
+      "url": "https://github.com/advisories/GHSA-f269-vfmq-vjvj",
+      "vulnerable_versions": ">=7.0.0 <7.24.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1114637,
+      "url": "https://github.com/advisories/GHSA-vrm6-8vpv-qv8q",
+      "vulnerable_versions": ">=7.0.0 <7.24.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1114638,
+      "url": "https://github.com/advisories/GHSA-vrm6-8vpv-qv8q",
+      "vulnerable_versions": "<6.24.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1114639,
+      "url": "https://github.com/advisories/GHSA-v9p9-hfj2-hcw8",
+      "vulnerable_versions": ">=7.0.0 <7.24.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1114640,
+      "url": "https://github.com/advisories/GHSA-v9p9-hfj2-hcw8",
+      "vulnerable_versions": "<6.24.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1121186,
+      "url": "https://github.com/advisories/GHSA-vmh5-mc38-953g",
+      "vulnerable_versions": ">=8.0.0 <8.5.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1121187,
+      "url": "https://github.com/advisories/GHSA-vmh5-mc38-953g",
+      "vulnerable_versions": ">=7.23.0 <7.28.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1121243,
+      "url": "https://github.com/advisories/GHSA-vxpw-j846-p89q",
+      "vulnerable_versions": ">=8.0.0 <8.5.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1121244,
+      "url": "https://github.com/advisories/GHSA-vxpw-j846-p89q",
+      "vulnerable_versions": ">=7.0.0 <7.28.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1121245,
+      "url": "https://github.com/advisories/GHSA-vxpw-j846-p89q",
+      "vulnerable_versions": "<6.27.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1121247,
+      "url": "https://github.com/advisories/GHSA-hm92-r4w5-c3mj",
+      "vulnerable_versions": ">=7.23.0 <7.28.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1130717,
+      "url": "https://github.com/advisories/GHSA-4cwx-7wf7-3272",
+      "vulnerable_versions": ">=8.0.0 <8.9.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1130718,
+      "url": "https://github.com/advisories/GHSA-4cwx-7wf7-3272",
+      "vulnerable_versions": ">=7.0.0 <7.29.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1240040,
+      "url": "https://github.com/advisories/GHSA-rfgv-xxqx-mfg5",
+      "vulnerable_versions": ">=8.0.0 <8.10.2",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1240041,
+      "url": "https://github.com/advisories/GHSA-rfgv-xxqx-mfg5",
+      "vulnerable_versions": ">=7.0.0 <7.29.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1240042,
+      "url": "https://github.com/advisories/GHSA-rfgv-xxqx-mfg5",
+      "vulnerable_versions": ">=6.7.0 <6.28.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1240049,
+      "url": "https://github.com/advisories/GHSA-w293-vg96-wgc3",
+      "vulnerable_versions": ">=8.0.0 <8.10.2",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1240050,
+      "url": "https://github.com/advisories/GHSA-w293-vg96-wgc3",
+      "vulnerable_versions": ">=7.24.1 <7.29.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1242783,
+      "url": "https://github.com/advisories/GHSA-38rv-x7px-6hhq",
+      "vulnerable_versions": ">=8.0.0 <8.5.0",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243112,
+      "url": "https://github.com/advisories/GHSA-xjj6-f33q-929c",
+      "vulnerable_versions": ">=8.0.0 <8.12.2",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243113,
+      "url": "https://github.com/advisories/GHSA-xjj6-f33q-929c",
+      "vulnerable_versions": ">=7.18.0 <7.30.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243114,
+      "url": "https://github.com/advisories/GHSA-xjj6-f33q-929c",
+      "vulnerable_versions": ">=6.23.0 <6.29.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243472,
+      "url": "https://github.com/advisories/GHSA-4w7w-5xrc-9h26",
+      "vulnerable_versions": ">=8.0.0 <8.12.2",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243473,
+      "url": "https://github.com/advisories/GHSA-4w7w-5xrc-9h26",
+      "vulnerable_versions": ">=7.0.0 <7.30.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243474,
+      "url": "https://github.com/advisories/GHSA-2m5v-pch6-74hx",
+      "vulnerable_versions": ">=8.0.0 <8.12.2",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243475,
+      "url": "https://github.com/advisories/GHSA-2m5v-pch6-74hx",
+      "vulnerable_versions": ">=7.0.0 <7.30.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243476,
+      "url": "https://github.com/advisories/GHSA-2m5v-pch6-74hx",
+      "vulnerable_versions": ">=4.0.0 <6.29.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243477,
+      "url": "https://github.com/advisories/GHSA-qrxm-fqhp-jwvm",
+      "vulnerable_versions": ">=8.0.0 <8.12.2",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243478,
+      "url": "https://github.com/advisories/GHSA-qrxm-fqhp-jwvm",
+      "vulnerable_versions": ">=7.0.0 <7.30.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "undici",
+      "id": 1243479,
+      "url": "https://github.com/advisories/GHSA-qrxm-fqhp-jwvm",
+      "vulnerable_versions": ">=4.2.1 <6.29.1",
+      "severity": "high",
+      "versions": ["undici@5.29.0", "undici@6.26.0", "undici@7.14.0", "undici@7.26.0", "undici@8.3.0"]
+    },
+    {
+      "package": "vite",
+      "id": 1116232,
+      "url": "https://github.com/advisories/GHSA-v2wj-q39q-566r",
+      "vulnerable_versions": ">=7.1.0 <=7.3.1",
+      "severity": "high",
+      "versions": ["vite@4.5.14", "vite@6.4.2", "vite@7.1.10", "vite@7.1.4"]
+    },
+    {
+      "package": "vite",
+      "id": 1116235,
+      "url": "https://github.com/advisories/GHSA-p9ff-h696-f583",
+      "vulnerable_versions": ">=7.0.0 <=7.3.1",
+      "severity": "high",
+      "versions": ["vite@4.5.14", "vite@6.4.2", "vite@7.1.10", "vite@7.1.4"]
+    },
+    {
+      "package": "vite",
+      "id": 1120061,
+      "url": "https://github.com/advisories/GHSA-c27g-q93r-2cwf",
+      "vulnerable_versions": "<=5.4.8",
+      "severity": "high",
+      "versions": ["vite@4.5.14", "vite@6.4.2", "vite@7.1.10", "vite@7.1.4"]
+    },
+    {
+      "package": "vite",
+      "id": 1242658,
+      "url": "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+      "vulnerable_versions": "<=6.4.3",
+      "severity": "high",
+      "versions": ["vite@4.5.14", "vite@6.4.2", "vite@7.1.10", "vite@7.1.4"]
+    },
+    {
+      "package": "vite",
+      "id": 1242659,
+      "url": "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+      "vulnerable_versions": ">=7.0.0 <=7.3.6",
+      "severity": "high",
+      "versions": ["vite@4.5.14", "vite@6.4.2", "vite@7.1.10", "vite@7.1.4"]
+    },
+    {
+      "package": "wrangler",
+      "id": 1112456,
+      "url": "https://github.com/advisories/GHSA-36p8-mvp6-cv38",
+      "vulnerable_versions": ">=4.0.0 <4.59.1",
+      "severity": "high",
+      "versions": ["wrangler@4.50.0"]
+    },
+    {
+      "package": "ws",
+      "id": 1123259,
+      "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
+      "vulnerable_versions": ">=8.0.0 <8.21.0",
+      "severity": "high",
+      "versions": ["ws@7.5.11", "ws@8.18.0", "ws@8.20.1", "ws@8.21.0"]
+    },
+    {
+      "package": "zod",
+      "id": 1243066,
+      "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "vulnerable_versions": "<4.6.6",
+      "severity": "high",
+      "versions": ["zod@3.22.3", "zod@3.25.76", "zod@4.1.8", "zod@4.4.3"]
+    }
+  ]
+}
