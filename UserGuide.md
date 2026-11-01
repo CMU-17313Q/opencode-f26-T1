@@ -22,7 +22,7 @@ No setup needed: the website already has the example project from [Try it on an 
 
 Everyone shares this one copy of the project, so try it one person at a time.
 
-**Your own folder.** The website can only open folders on its server, not on your computer. To get your own, ask OpenCode in any session, for example `Create a folder ~/my-project` or `Clone https://github.com/you/your-repo into ~/my-project`, and allow access when it asks. Then choose **Open project** and pick it. Every visitor can see these folders, and they are deleted whenever the website is redeployed. To keep your work, run OpenCode locally as in the example below.
+**Your own folder.** The website can only open folders on its server, not on your computer. To get your own, ask OpenCode in any session, for example `Create a folder ~/my-project` or `Clone https://github.com/you/your-repo into ~/my-project`, and allow access when it asks. Then choose **Open project** and pick it. Every visitor can see these folders. The website resets every night at 4 AM Qatar time and on every redeploy, which deletes all sessions and folders. To keep your work, run OpenCode locally as in the example below.
 
 ## Before you start
 
