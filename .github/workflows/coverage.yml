@@ -27,9 +27,12 @@ jobs:
 
       - name: Run feature tests with coverage
         working-directory: packages/opencode
+        # Bun fails with WriteFailed when the coverage table overflows a pipe, so write to a file
         run: |
-          set -o pipefail
-          bun run test:coverage 2>&1 | tee coverage.txt
+          status=0
+          bun run test:coverage > coverage.txt 2>&1 || status=$?
+          cat coverage.txt
+          exit "$status"
 
       - name: Enforce coverage gate
         working-directory: packages/opencode
