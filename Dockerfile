@@ -7,15 +7,15 @@ COPY --from=node /usr/local/bin/node /usr/local/bin/node
 WORKDIR /app
 
 # Install native build dependencies
-RUN apt-get update && apt-get install -y     python3     make     g++     git     ca-certificates     && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3 make g++ git ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # Tell node-gyp where Python is
 ENV PYTHON=/usr/bin/python3
 
 COPY . .
 
-# Match packageManager and install exactly the committed dependency graph.
-RUN node --version && bun --version && bun install --frozen-lockfile
+# Use the committed dependency graph and a layout compatible with native scripts.
+RUN node --version && bun --version && bun install --frozen-lockfile --linker hoisted
 
 EXPOSE 4096
 
