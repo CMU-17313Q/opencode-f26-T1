@@ -1,0 +1,41 @@
+name: Docker Build
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docker:
+    name: Build and start deployment image
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Build deployment image
+        run: docker build --progress=plain --tag opencode-ci .
+
+      - name: Check image runtimes
+        run: docker run --rm --entrypoint sh opencode-ci -c 'node --version && bun --version'
+
+      - name: Start server and check HTTP response
+        run: |
+          docker run --detach --name opencode-smoke --publish 127.0.0.1:4096:4096 opencode-ci
+          curl --fail --retry 20 --retry-all-errors --retry-delay 3 --retry-connrefused http://127.0.0.1:4096/ > /dev/null
+
+      - name: Show server logs and remove test container
+        if: always()
+        run: |
+          docker logs opencode-smoke || true
+          docker rm --force opencode-smoke || true
