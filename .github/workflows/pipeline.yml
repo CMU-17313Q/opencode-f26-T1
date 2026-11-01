@@ -1,0 +1,65 @@
+name: Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pipeline-${{ github.event.pull_request.number || github.ref }}
+  # Never cancel a main run while it may be deploying
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  gitleaks:
+    name: Gitleaks
+    uses: ./.github/workflows/gitleaks.yml
+
+  bun-audit:
+    name: Bun Audit
+    uses: ./.github/workflows/bun-audit.yml
+
+  typecheck:
+    name: Typecheck
+    needs: [gitleaks, bun-audit]
+    uses: ./.github/workflows/typecheck.yml
+
+  dependency-cruiser:
+    name: Dependency Cruiser
+    needs: [gitleaks, bun-audit]
+    uses: ./.github/workflows/dependency-cruiser.yml
+
+  fast-check:
+    name: Fast-check
+    needs: [gitleaks, bun-audit]
+    uses: ./.github/workflows/fast-check.yml
+
+  coverage:
+    name: Coverage Gate
+    needs: [gitleaks, bun-audit]
+    uses: ./.github/workflows/coverage.yml
+
+  test:
+    name: Test
+    needs: [gitleaks, bun-audit]
+    permissions:
+      contents: read
+      checks: write
+    uses: ./.github/workflows/test.yml
+
+  docker-build:
+    name: Docker Build
+    needs: [typecheck, dependency-cruiser, fast-check, coverage, test]
+    uses: ./.github/workflows/docker-build.yml
+
+  deploy:
+    name: VM Deploy
+    needs: docker-build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    uses: ./.github/workflows/VM-deploy.yml
+    secrets: inherit

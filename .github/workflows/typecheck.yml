@@ -1,12 +1,12 @@
 name: typecheck
 
 on:
-  push:
-  pull_request:
+  workflow_call:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # github.workflow resolves to the caller's name when called from pipeline.yml
+  group: typecheck-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
