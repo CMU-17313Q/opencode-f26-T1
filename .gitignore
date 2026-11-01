@@ -11,3 +11,4 @@ test-results/.last-run.json
 /bun-audit-errors.txt
 /bun-audit-summary.json
 /bun-audit-policy.txt
+/.env

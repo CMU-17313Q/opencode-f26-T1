@@ -3,4 +3,28 @@ services:
     build: .
     ports:
       - '127.0.0.1:4096:4096'
+    environment:
+      # Written to .env on the VM by the deploy workflow.
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      # Visitors share our key, so only offer a curated set of OpenRouter models.
+      # The web UI misreads model IDs containing "/" in the top-level "model",
+      # so the default is also set per agent, which the server parses for it.
+      OPENCODE_CONFIG_CONTENT: |
+        {
+          "model": "openrouter/openai/gpt-6.1-sol",
+          "agent": {
+            "build": { "model": "openrouter/openai/gpt-6.1-sol" },
+            "plan": { "model": "openrouter/openai/gpt-6.1-sol" }
+          },
+          "enabled_providers": ["openrouter"],
+          "provider": {
+            "openrouter": {
+              "whitelist": [
+                "openai/gpt-6.1-sol",
+                "openai/gpt-6.1-terra",
+                "moonshotai/kimi-k3.1-pro"
+              ]
+            }
+          }
+        }
     restart: unless-stopped

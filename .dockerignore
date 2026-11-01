@@ -1,3 +1,5 @@
 # Install dependencies inside the image, never from the host.
 **/node_modules
 .git
+# Deploy secrets are passed at runtime, never baked into the image.
+.env

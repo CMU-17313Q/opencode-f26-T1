@@ -17,14 +17,22 @@ jobs:
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.1
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_ADMIN }}
           password: ${{ secrets.ADMIN_PASSWORD }}
           command_timeout: 30m
+          envs: OPENROUTER_API_KEY
           script: |
             set -eu
+            : "${OPENROUTER_API_KEY:?Set the OPENROUTER_API_KEY repository secret}"
             cd "$HOME/${{ secrets.REPO_NAME }}"
             git pull --ff-only origin main
+            (umask 077 && printf 'OPENROUTER_API_KEY=%s\n' "$OPENROUTER_API_KEY" > .env)
             docker compose up -d --build --remove-orphans
             curl --fail --retry 12 --retry-all-errors --retry-delay 5 --retry-connrefused http://127.0.0.1:4096/ > /dev/null
+            # Whitelisted models that are mistyped or deprecated in models.dev are silently dropped.
+            curl --fail --silent --show-error http://127.0.0.1:4096/config/providers | grep -qF '"openrouter"' \
+              || { echo "No OpenRouter models are available on the server" >&2; exit 1; }
