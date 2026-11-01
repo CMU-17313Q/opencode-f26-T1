@@ -17,6 +17,22 @@ COPY . .
 # Use the committed dependency graph and a layout compatible with native scripts.
 RUN node --version && bun --version && bun install --frozen-lockfile --linker hoisted
 
+# The web UI's "Open project" dialog browses ~, so give the server a clean home that only
+# holds the demo project, and keep tool caches and opencode's own data under /root.
+ENV HOME=/workspace \
+  XDG_CONFIG_HOME=/root/.config \
+  XDG_DATA_HOME=/root/.local/share \
+  XDG_CACHE_HOME=/root/.cache \
+  XDG_STATE_HOME=/root/.local/state \
+  BUN_INSTALL_CACHE_DIR=/root/.bun/install/cache \
+  npm_config_cache=/root/.npm
+
+# Buggy demo project from UserGuide.md, so web visitors can open ~/guided-demo and try
+# guided debugging. Committed so a shared, already-fixed copy resets with `git restore .`.
+COPY deploy/guided-demo /workspace/guided-demo
+RUN cd /workspace/guided-demo && git init -q && git add . \
+  && git -c user.name=opencode -c user.email=demo@opencode.local commit -qm "Add buggy calculator demo"
+
 EXPOSE 4096
 
 CMD ["bun", "run", "--cwd", "packages/opencode", "src/index.ts", "web", "--hostname", "0.0.0.0", "--port", "4096"]

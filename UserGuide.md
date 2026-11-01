@@ -6,6 +6,24 @@ Guided debugging helps you understand a failing test before OpenCode fixes it. O
 2. Suggests how to test a fix.
 3. Shows the fix only if you ask.
 
+## Try it on our website
+
+No setup needed: the website already has the example project from [Try it on an example](#try-it-on-an-example) and a model connected.
+
+1. Open the [guided-demo project on our website](https://crs-17313-t1.qatar.cmu.edu/L3dvcmtzcGFjZS9ndWlkZWQtZGVtbw/session). It opens the `guided-demo` project. You can also choose **Open project** and pick `~/guided-demo`.
+
+2. Check that the model under the message box is **GPT-6.1 Sol**. GPT-6.1 Terra and Kimi K3.1 Pro also work.
+
+3. Paste this request and press Enter. It starts by resetting the project, in case someone else already fixed it:
+
+   > Run git restore . to reset this project, then run bun test. If it fails, use explain_error, then testing_strategy, then guided_debug to help me understand the failure and testing strategy. Do not show or apply the fix until I approve through guided_debug. Only claim tests passed if you actually ran them and saw passing results.
+
+4. Follow the prompts and apply the fix as in steps 7 and 8 of the example below.
+
+Everyone shares this one copy of the project, so try it one person at a time.
+
+**Your own folder.** The website can only open folders on its server, not on your computer. To get your own, ask OpenCode in any session, for example `Create a folder ~/my-project` or `Clone https://github.com/you/your-repo into ~/my-project`, and allow access when it asks. Then choose **Open project** and pick it. Every visitor can see these folders, and they are deleted whenever the website is redeployed. To keep your work, run OpenCode locally as in the example below.
+
 ## Before you start
 
 You need:
