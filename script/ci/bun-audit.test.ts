@@ -25,13 +25,21 @@ test("reports inherited vulnerabilities while passing only the approved snapshot
   expect(result.totalAdvisoryEntries).toBe(1)
 })
 
-test("rejects new high findings and severity escalation", () => {
+test("rejects new high findings, severity escalation, and widened ranges", () => {
   for (const changed of [
-    { ...advisory, id: 124 },
+    { ...advisory, id: 124, url: "https://github.com/advisories/GHSA-mnop-qrst-uvwx" },
     { ...advisory, severity: "critical" },
+    { ...advisory, vulnerable_versions: "<3.0.0" },
   ]) {
     expect(checkAudit(JSON.stringify({ example: [changed] }), "", 1, lock, baseline, today).status).toBe("FAIL")
   }
+})
+
+test("keeps passing when npm renumbers an unchanged advisory", () => {
+  const result = checkAudit(JSON.stringify({ example: [{ ...advisory, id: 999 }] }), "", 1, lock, baseline, today)
+
+  expect(result.status).toBe("PASS")
+  expect(result.obsoleteBaselineEntries).toBe(0)
 })
 
 test("rejects changed installed versions even for the same advisory", () => {
