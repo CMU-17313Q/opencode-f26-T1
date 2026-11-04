@@ -2,6 +2,7 @@ import { FSUtil } from "@opencode-ai/core/fs-util"
 import { Effect, Stream } from "effect"
 import { HttpBody, HttpClient, HttpClientRequest, HttpServerRequest, HttpServerResponse } from "effect/unstable/http"
 import { createHash } from "node:crypto"
+import path from "path"
 import { ProxyUtil } from "../proxy-util"
 
 let embeddedUIPromise: Promise<Record<string, string> | null> | undefined
@@ -41,11 +42,19 @@ export function upstreamURL(path: string) {
   return new URL(path, UI_UPSTREAM).toString()
 }
 
-export function embeddedUI(disableEmbeddedWebUi: boolean) {
+export function embeddedUI(disableEmbeddedWebUi: boolean, webUiDir = "") {
   if (disableEmbeddedWebUi) return Promise.resolve(null)
+  if (webUiDir) return (embeddedUIPromise ??= builtUI(webUiDir))
   return (embeddedUIPromise ??=
     // @ts-expect-error - generated file at build time
     import("opencode-web-ui.gen.ts").then((module) => module.default as Record<string, string>).catch(() => null))
+}
+
+// Source runs have no generated bundle, so map a `packages/app` build on disk the same way.
+export async function builtUI(dir: string) {
+  const files = await Array.fromAsync(new Bun.Glob("**/*").scan({ cwd: dir }))
+
+  return Object.fromEntries(files.map((file) => [file, path.join(dir, file)]))
 }
 
 function notFound() {
@@ -77,10 +86,10 @@ export function serveEmbeddedUIEffect(
 
 export function serveUIEffect(
   request: HttpServerRequest.HttpServerRequest,
-  services: { fs: FSUtil.Interface; client: HttpClient.HttpClient; disableEmbeddedWebUi: boolean },
+  services: { fs: FSUtil.Interface; client: HttpClient.HttpClient; disableEmbeddedWebUi: boolean; webUiDir?: string },
 ) {
   return Effect.gen(function* () {
-    const embeddedWebUI = yield* Effect.promise(() => embeddedUI(services.disableEmbeddedWebUi))
+    const embeddedWebUI = yield* Effect.promise(() => embeddedUI(services.disableEmbeddedWebUi, services.webUiDir))
     const path = new URL(request.url, "http://localhost").pathname
 
     if (embeddedWebUI) return yield* serveEmbeddedUIEffect(path, services.fs, embeddedWebUI)
