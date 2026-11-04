@@ -80,8 +80,7 @@ export function checkAudit(
       const entry = finding(value, string(value.package))
       if (severity[entry.severity] < severity.high)
         throw new Error("Baseline may only contain high or critical entries")
-      const resolved = [...new Set(value.versions.map(string))].sort()
-      return JSON.stringify({ ...entry, versions: resolved })
+      return key({ ...entry, versions: [...new Set(value.versions.map(string))].sort() })
     }),
   )
   const current = findings
@@ -90,7 +89,7 @@ export function checkAudit(
       ...entry,
       versions: versions(lock, entry.package),
     }))
-  const unexpected = current.filter((entry) => !approved.has(JSON.stringify(entry)))
+  const unexpected = current.filter((entry) => !approved.has(key(entry)))
   return {
     status: unexpected.length ? "FAIL" : "PASS",
     meaning: "No high or critical findings outside the temporary baseline",
@@ -99,10 +98,21 @@ export function checkAudit(
     totalAdvisoryEntries: findings.length,
     highOrCriticalEntries: current.length,
     inheritedEntries: current.length - unexpected.length,
-    obsoleteBaselineEntries: [...approved].filter((key) => !current.some((entry) => JSON.stringify(entry) === key))
+    obsoleteBaselineEntries: [...approved].filter((approvedKey) => !current.some((entry) => key(entry) === approvedKey))
       .length,
     unexpected,
   }
+}
+
+// npm renumbers advisories without changing them, so match on the stable GHSA URL instead of the numeric ID.
+function key(entry: {
+  package: string
+  url: string
+  vulnerable_versions: string
+  severity: string
+  versions: string[]
+}) {
+  return JSON.stringify([entry.package, entry.url, entry.vulnerable_versions, entry.severity, entry.versions])
 }
 
 if (import.meta.main) {
