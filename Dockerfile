@@ -17,6 +17,10 @@ COPY . .
 # Use the committed dependency graph and a layout compatible with native scripts.
 RUN node --version && bun --version && bun install --frozen-lockfile --linker hoisted
 
+# Serve this repo's web UI instead of proxying app.opencode.ai, so changes like "Clone from git URL" ship.
+RUN OPENCODE_CHANNEL=prod bun run --cwd packages/app build
+ENV OPENCODE_WEB_UI_DIR=/app/packages/app/dist
+
 # The web UI's "Open project" dialog browses ~, so give the server a clean home that only
 # holds the demo project, and keep tool caches and opencode's own data under /root.
 ENV HOME=/workspace \

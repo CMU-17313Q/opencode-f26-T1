@@ -206,7 +206,12 @@ const uiRoute = HttpRouter.use((router) =>
     const client = yield* HttpClient.HttpClient
     const flags = yield* RuntimeFlags.Service
     yield* router.add("*", "/*", (request) =>
-      serveUIEffect(request, { fs, client, disableEmbeddedWebUi: flags.disableEmbeddedWebUi }),
+      serveUIEffect(request, {
+        fs,
+        client,
+        disableEmbeddedWebUi: flags.disableEmbeddedWebUi,
+        webUiDir: flags.webUiDir,
+      }),
     )
   }),
 ).pipe(Layer.provide(authOnlyRouterLayer))

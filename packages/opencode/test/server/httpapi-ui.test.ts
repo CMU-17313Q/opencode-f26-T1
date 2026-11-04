@@ -1,8 +1,11 @@
 import { createHash } from "node:crypto"
+import path from "path"
 import { describe, expect } from "bun:test"
 import { Flag } from "@opencode-ai/core/flag/flag"
 import { ConfigProvider, Effect, Layer, Option } from "effect"
 import { AppNodeBuilder } from "@opencode-ai/core/effect/app-node-builder"
+import { CrossSpawnSpawner } from "@opencode-ai/core/cross-spawn-spawner"
+import { LayerNode } from "@opencode-ai/core/effect/layer-node"
 import {
   HttpClient,
   HttpClientRequest,
@@ -17,7 +20,8 @@ import { RuntimeFlags } from "../../src/effect/runtime-flags"
 import { ServerAuth } from "../../src/server/auth"
 import { authorizationRouterMiddleware } from "../../src/server/routes/instance/httpapi/middleware/authorization"
 import { HttpApiApp } from "../../src/server/routes/instance/httpapi/server"
-import { serveEmbeddedUIEffect, serveUIEffect } from "../../src/server/shared/ui"
+import { builtUI, serveEmbeddedUIEffect, serveUIEffect } from "../../src/server/shared/ui"
+import { tmpdirScoped } from "../fixture/fixture"
 import { testEffect } from "../lib/effect"
 
 const testStateLayer = Layer.effectDiscard(
@@ -323,6 +327,28 @@ describe("HttpApi UI fallback", () => {
       expect(readPath).toBe("/$bunfs/root/assets/app.js")
       expect(response.headers.get("content-type")).toContain("text/javascript")
       expect(yield* responseText(response)).toBe("console.log('embedded')")
+    }),
+  )
+
+  it.live("serves a packages/app build from disk with SPA fallback", () =>
+    Effect.gen(function* () {
+      const dir = yield* tmpdirScoped().pipe(Effect.provide(LayerNode.compile(CrossSpawnSpawner.node)))
+      yield* Effect.promise(() =>
+        Promise.all([
+          Bun.write(path.join(dir, "index.html"), "<html>local</html>"),
+          Bun.write(path.join(dir, "assets", "app.js"), "console.log('local')"),
+        ]),
+      )
+
+      const fs = yield* FSUtil.Service
+      const ui = yield* Effect.promise(() => builtUI(dir))
+      const asset = yield* serveEmbeddedUIEffect("/assets/app.js", fs, ui).pipe(Effect.map(HttpServerResponse.toWeb))
+      const route = yield* serveEmbeddedUIEffect("/session/abc", fs, ui).pipe(Effect.map(HttpServerResponse.toWeb))
+
+      expect(asset.headers.get("content-type")).toContain("text/javascript")
+      expect(yield* responseText(asset)).toBe("console.log('local')")
+      expect(route.headers.get("content-type")).toContain("text/html")
+      expect(yield* responseText(route)).toBe("<html>local</html>")
     }),
   )
 
