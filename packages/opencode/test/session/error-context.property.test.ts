@@ -205,3 +205,132 @@ describe("error context properties", () => {
     )
   })
 })
+
+// P4B generators deliberately include empty/multiline evidence, distinct execution IDs,
+// zero/nonzero exits, errors, interrupted calls, and multiple parts per message.
+// Commands are data only: these tests never execute generated shell commands.
+const evidence = fc.oneof(text, fc.constantFrom("", "\n", "Error: missing\n  at main.ts:1", "مرحبا"))
+const execution = fc.record({
+  kind: fc.constantFrom("failed", "error", "success", "running", "interrupted"),
+  command: evidence,
+  cwd: evidence,
+  output: evidence,
+  exit: fc.integer({ min: 1, max: 255 }),
+})
+function tool(entry: ReturnType<typeof execution.generate>["value"], id: number) {
+  return {
+    type: "tool",
+    tool: "bash",
+    callID: `call-${id}`,
+    state: {
+      status:
+        entry.kind === "error" || entry.kind === "interrupted"
+          ? "error"
+          : entry.kind === "running"
+            ? "running"
+            : "completed",
+      input: { command: `run-${id}:${entry.command}`, workdir: `/run-${id}/${entry.cwd}` },
+      error: entry.kind === "error" ? entry.output : undefined,
+      output: entry.output,
+      metadata: { exit: entry.kind === "success" ? 0 : entry.exit, interrupted: entry.kind === "interrupted" },
+    },
+  }
+}
+
+describe("aaljabri P4B requirements", () => {
+  // R1: When asked about the latest failure without a pasted error, the collector
+  // selects the most recent failed command. Kind: model/oracle.
+  test("R1: latest failure agrees with a chronological execution model", () => {
+    fc.assert(
+      fc.property(fc.array(fc.array(execution, { maxLength: 5 }), { maxLength: 12 }), (groups) => {
+        const entries = groups.flat()
+        const expected = entries.reduce<number | undefined>(
+          (last, entry, index) => (entry.kind === "failed" || entry.kind === "error" ? index : last),
+          undefined,
+        )
+        let index = 0
+        const messages = groups.map((group) => ({ parts: group.map((entry) => tool(entry, index++)) }))
+        const result = ErrorContext.latest(messages)
+        if (expected === undefined) {
+          expect(result).toBeUndefined()
+          return
+        }
+        expect(result?.input?.command).toBe(`run-${expected}:${entries[expected]!.command}`)
+        expect(result?.input?.workdir).toBe(`/run-${expected}/${entries[expected]!.cwd}`)
+      }),
+      options,
+    )
+  })
+
+  // R2: The current failure's command, directory, output, and exit code must
+  // come from the same execution. Kind: invariant.
+  test("R2: selected failure never mixes execution evidence", () => {
+    fc.assert(
+      fc.property(fc.array(execution, { minLength: 2, maxLength: 20 }), (entries) => {
+        const parts = entries.map((entry, index) => tool({ ...entry, kind: "failed" }, index))
+        const last = parts[parts.length - 1]!
+        expect(ErrorContext.latest([{ parts }])).toMatchObject({
+          input: last.state.input,
+          output: last.state.output,
+          exitCode: last.state.metadata.exit,
+        })
+      }),
+      options,
+    )
+  })
+
+  // R3: Adding unrelated chat messages after a failure, with no new tool calls,
+  // preserves the selected failure and its collected context. Kind: metamorphic.
+  test("R3: unrelated chat preserves the full failure context", () => {
+    fc.assert(
+      fc.property(
+        execution,
+        evidence,
+        path,
+        fc.array(evidence, { minLength: 1, maxLength: 12 }),
+        (entry, task, file, tail) => {
+          const messages = [
+            {
+              info: { role: "user" },
+              parts: [
+                { type: "text", text: `task:${task}` },
+                { type: "file", source: { type: "file", path: file, text: { value: task } } },
+              ],
+            },
+            { info: { role: "assistant" }, parts: [tool({ ...entry, kind: "failed" }, 0)] },
+          ]
+          const before = ErrorContext.latest(messages)
+          expect(before).toBeDefined()
+          expect(before?.task).toBe(`task:${task}`)
+          expect(before?.files).toEqual([{ path: file, text: task }])
+          const unrelated = tail.map((value) => ({ info: { role: "user" }, parts: [{ type: "text", text: value }] }))
+          expect(ErrorContext.latest([...messages, ...unrelated])).toEqual(before)
+        },
+      ),
+      options,
+    )
+  })
+
+  // R4: The collector preserves available command input, working directory,
+  // exit code, and error/output for inspection. Kind: invariant.
+  test("R4: available execution evidence is preserved exactly", () => {
+    fc.assert(
+      fc.property(execution, fc.boolean(), fc.boolean(), (entry, error, full) => {
+        const part = tool({ ...entry, kind: error ? "error" : "failed" }, 0)
+        const input = structuredClone(part.state.input)
+        const result = ErrorContext.collect({
+          ...part,
+          state: {
+            ...part.state,
+            output: full ? entry.output : undefined,
+            metadata: { ...part.state.metadata, output: entry.output },
+          },
+        })
+        expect(result).toMatchObject({ input, exitCode: entry.exit, output: entry.output })
+        expect(result?.error).toBe(error ? entry.output : undefined)
+        expect(part.state.input).toEqual(input)
+      }),
+      options,
+    )
+  })
+})
