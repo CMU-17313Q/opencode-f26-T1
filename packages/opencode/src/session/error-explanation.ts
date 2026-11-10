@@ -1,4 +1,5 @@
 import type { ErrorContext } from "./error-context"
+import stripAnsi from "strip-ansi"
 
 export type Confidence = "high" | "medium" | "low"
 
@@ -35,9 +36,16 @@ const fixes = [
 ]
 
 export function create(context: ErrorContext.Context): Explanation {
-  const text = [context.error, context.output].filter((value) => value?.trim()).join("\n")
+  const text = stripAnsi([context.error, context.output].filter((value) => value?.trim()).join("\n"))
   const hint = hints.find(([pattern]) => pattern.test(text))?.[1]
-  const locations = [...text.matchAll(/(\/?(?:[\w.-]+\/)*[\w.-]+\.[a-z]{1,4})(?::(\d+)|\((\d+),\d+\))/gi)]
+  // Anchor a diagnostic or stack frame so spaces and Unicode remain part of
+  // the path, rather than silently reporting only its final ASCII fragment.
+  const locations = [
+    ...text.matchAll(/(?:\bat[ \t]+[^\r\n(]*\(|^[ \t]*)([^\r\n():]+?\.[a-z]{1,4})(?::(\d+)(?::\d+)?|\((\d+),\d+\))/gim),
+  ]
+  const comparisons = [
+    ...text.matchAll(/^[ \t]*Expected:[ \t]*(\S[^\r\n]*)\r?\n(?:[ \t]*\r?\n)*[ \t]*Received:[ \t]*(\S[^\r\n]*)/gm),
+  ]
   const files = new Set([
     ...locations.map((match) => `${match[1]} line ${match[2] ?? match[3]}`),
     ...context.files.map((file) => file.path),
@@ -52,6 +60,7 @@ export function create(context: ErrorContext.Context): Explanation {
     evidence: [
       ...[...files].map((file) => `File: ${file}`),
       ...[...functions].map((name) => `Function: ${name}`),
+      ...comparisons.flatMap((match) => [`Expected: ${match[1].trim()}`, `Actual: ${match[2].trim()}`]),
       ...(firstError ? [`Error output: ${shorten(firstError)}`] : []),
     ],
     missing: [
