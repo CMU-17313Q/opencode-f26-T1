@@ -3,15 +3,11 @@ bun test v1.3.14 (0d9b296a)
 test/tool/guided-debug.property.test.ts:
 P4B hlabda: seed=17313, numRuns=300 per property
 P4B hlabda R1 [model/oracle]: 300 cases passed
-(pass) P4B hlabda: guided debugging properties > R1 [model/oracle]: preserves reported source locations [6.91ms]
 P4B hlabda R2 [model/oracle]: 300 cases passed
-(pass) P4B hlabda: guided debugging properties > R2 [model/oracle]: labels expected and actual assertion values [5.74ms]
 P4B hlabda R3 [invariant]: 300 cases passed
-(pass) P4B hlabda: guided debugging properties > R3 [invariant]: requires unambiguous consent through both stages [249.59ms]
 P4B hlabda R7 [metamorphic]: 300 cases passed
-(pass) P4B hlabda: guided debugging properties > R7 [metamorphic]: renaming changes only file references [9.56ms]
 
  4 pass
  0 fail
  6672 expect() calls
-Ran 4 tests across 1 file. [1037.00ms]
+Ran 4 tests across 1 file. [1031.00ms]

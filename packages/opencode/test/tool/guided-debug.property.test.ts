@@ -19,10 +19,10 @@ if (!Number.isInteger(seed) || seed < -2147483648 || seed > 2147483647) {
 const options = { numRuns: 300, seed, verbose: true }
 console.info(`P4B hlabda: seed=${seed}, numRuns=${options.numRuns} per property`)
 
-// Realistic POSIX paths include nested directories, spaces, Unicode, and JS/TS
+// Realistic POSIX paths include nested directories, spaces, parentheses, Unicode, and JS/TS
 // extensions. Positive line/column generators include the first source line.
 const segment = fc
-  .array(fc.constantFrom("a", "b", "0", "-", "_", " ", "é", "م"), { minLength: 1, maxLength: 12 })
+  .array(fc.constantFrom("a", "b", "0", "-", "_", " ", "(", ")", "é", "م"), { minLength: 1, maxLength: 12 })
   .map((parts) => parts.join(""))
 const file = fc
   .tuple(fc.array(segment, { minLength: 1, maxLength: 3 }), fc.constantFrom("ts", "tsx", "js"))
@@ -31,7 +31,7 @@ const location = fc.record({
   file,
   line: fc.integer({ min: 1, max: 100000 }),
   column: fc.integer({ min: 1, max: 1000 }),
-  style: fc.constantFrom("stack", "diagnostic"),
+  style: fc.constantFrom("stack", "bare-stack", "diagnostic"),
 })
 
 // JSON encodes scalars on one diagnostic line, even for quotes/newlines in a
@@ -106,10 +106,11 @@ describe("P4B hlabda: guided debugging properties", () => {
   test("R1 [model/oracle]: preserves reported source locations", () => {
     fc.assert(
       fc.property(location, (input) => {
+        const position = `${input.file}:${input.line}:${input.column}`
         const output =
-          input.style === "stack"
-            ? `error: expect(received).toBe(expected)\n    at add (${input.file}:${input.line}:${input.column})`
-            : `${input.file}(${input.line},${input.column}): error TS2322: invalid value`
+          input.style === "diagnostic"
+            ? `${input.file}(${input.line},${input.column}): error TS2322: invalid value`
+            : `error: expect(received).toBe(expected)\n    at ${input.style === "stack" ? `add (${position})` : position}`
         const explanation = ErrorExplanation.create({ output, files: [] })
         expect(explanation.evidence).toContain(`File: ${input.file} line ${input.line}`)
         expect(ErrorExplanation.format(explanation)).toContain(`- File: ${input.file} line ${input.line}`)
@@ -120,6 +121,9 @@ describe("P4B hlabda: guided debugging properties", () => {
           [{ file: "/repo/src/calculator.ts", line: 1, column: 1, style: "stack" }],
           [{ file: "/repo/src/ a.ts", line: 1, column: 1, style: "stack" }],
           [{ file: "/repo/src/م.ts", line: 1, column: 1, style: "diagnostic" }],
+          [{ file: "/repo/src/add.ts", line: 12, column: 3, style: "bare-stack" }],
+          [{ file: "/repo/src/(calc)/add.ts", line: 12, column: 3, style: "diagnostic" }],
+          [{ file: "/repo/src/(calc)/add.ts", line: 12, column: 3, style: "stack" }],
         ],
       },
     )
