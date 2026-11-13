@@ -34,4 +34,4 @@ The four P4B tests run 500 cases each. Generated histories contain zero or multi
 
 ## Disclosure and review
 
-Codex inspected the implementation, wrote the four new properties and this traceability file, and ran validation. Interview notes and requirement wording came from Ahmad's P4A workbook; no new interviews or feedback were invented. Student understanding/verification and teammate review remain human responsibilities. Keep the P4B PR open and unmerged for the next project.
+Codex inspected the implementation, helped in writing the four new properties and this traceability file, and ran validation. Interview notes and requirement wording came from Ahmad's P4A workbook; no new interviews or feedback were invented.
