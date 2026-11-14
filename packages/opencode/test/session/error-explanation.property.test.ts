@@ -9,6 +9,10 @@ type Context = Parameters<typeof ErrorExplanation.create>[0]
 
 const runs = { numRuns: 300 }
 
+// CI runs `bun test --only-failures`, which hides passing tests. Print one line per property
+// so the Actions log shows each one ran, and how many generated cases it checked.
+const ran = (name: string) => console.log(`brutayis property passed: ${name} (${runs.numRuns} cases)`)
+
 // ---------------------------------------------------------------------------
 // Generators
 // ---------------------------------------------------------------------------
@@ -136,6 +140,7 @@ describe("brutayis P4B properties: error explanation", () => {
       }),
       runs,
     )
+    ran("R2 [metamorphic]")
   })
 
   // R3: The explanation finds the failing file and line from the error output, even if the
@@ -154,6 +159,7 @@ describe("brutayis P4B properties: error explanation", () => {
       }),
       runs,
     )
+    ran("R3 [model/oracle]")
   })
 
   // R4: When the student has not said what they were trying to do, the explanation says
@@ -176,6 +182,7 @@ describe("brutayis P4B properties: error explanation", () => {
       }),
       runs,
     )
+    ran("R4 [invariant]")
   })
 
   // R5: When the error is not recognized, the explanation says it is not sure instead of
@@ -196,6 +203,7 @@ describe("brutayis P4B properties: error explanation", () => {
       }),
       runs,
     )
+    ran("R5 [invariant]")
   })
 
   // R6: The "Where it happened" section names the file and error line the explanation is
@@ -221,5 +229,6 @@ describe("brutayis P4B properties: error explanation", () => {
       }),
       runs,
     )
+    ran("R6 [invariant]")
   })
 })
