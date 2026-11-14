@@ -8,10 +8,16 @@ export interface Explanation {
   confidence: Confidence
   evidence: string[]
   missing: string[]
+  rerunPassed: boolean
 }
 
+// Several causes fit an unresolved import, so knowing where it happened does not make the cause certain.
+const unresolved =
+  "An import could not be resolved: the package may not be installed, or the import name or path may be misspelled."
+
 const hints: readonly (readonly [RegExp, string])[] = [
-  [/cannot find module|enoent|no such file|not found/i, "A module, file, or folder the code needed was missing."],
+  [/cannot find (module|package)|module not found|failed to resolve import/i, unresolved],
+  [/enoent|no such file|not found/i, "A file or folder the code needed was missing."],
   [/cannot read propert|is not a function/i, "A value was undefined, null, or the wrong type when it was used."],
   [/is not defined|cannot find name/i, "The code uses a name that was never declared or imported."],
   [/is not assignable|error TS\d+/i, "A value of one type is used where a different type is expected."],
@@ -30,7 +36,7 @@ const guidance: readonly string[] = [
 export const sections = ["What went wrong", "Where it happened", "Why it happened", "How sure I am"] as const
 
 const fixes = [
-  /^#+\s*(proposed |suggested |the |a )?fix\b/im,
+  /^#+\s*(proposed |suggested |the |a |how to )?(fix|solution)\b/im,
   /\b(to fix (this|it)|the fix is|you can fix|fix (this|it) by|change \S+ to|replace \S+ with)\b/i,
 ]
 
@@ -48,7 +54,7 @@ export function create(context: ErrorContext.Context): Explanation {
   return {
     summary: summarize(context),
     hint,
-    confidence: !hint ? "low" : locations.length ? "high" : "medium",
+    confidence: !hint ? "low" : locations.length && hint !== unresolved ? "high" : "medium",
     evidence: [
       ...[...files].map((file) => `File: ${file}`),
       ...[...functions].map((name) => `Function: ${name}`),
@@ -57,8 +63,10 @@ export function create(context: ErrorContext.Context): Explanation {
     missing: [
       ...(text ? [] : ["the error message or output"]),
       ...(files.size ? [] : ["which file failed"]),
+      ...(context.tool ? [] : ["which command was run"]),
       ...(context.task ? [] : ["what the student was trying to do"]),
     ],
+    rerunPassed: context.rerunPassed === true,
   }
 }
 
@@ -66,6 +74,7 @@ export function format(explanation: Explanation): string {
   return [
     "## Error evidence",
     `What happened: ${explanation.summary}`,
+    ...(explanation.rerunPassed ? ["Latest run: a later run of the same command passed."] : []),
     ...(explanation.hint ? [`Hint (check it against the code): ${explanation.hint}`] : []),
     `Confidence: ${explanation.confidence}`,
     ...explanation.evidence.map((item) => `- ${item}`),
@@ -73,6 +82,9 @@ export function format(explanation: Explanation): string {
     "",
     "## How to explain this to the student",
     ...guidance.map((item) => `- ${item}`),
+    ...(explanation.rerunPassed
+      ? ["- Say that this failure came from an earlier run, and that a later run of the same command passed."]
+      : []),
     "",
     "## Response format",
     "Reply to the student with exactly these sections, in this order:",
