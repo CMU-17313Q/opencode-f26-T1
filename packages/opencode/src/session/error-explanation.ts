@@ -37,13 +37,16 @@ const fixes = [
 export function create(context: ErrorContext.Context): Explanation {
   const text = [context.error, context.output].filter((value) => value?.trim()).join("\n")
   const hint = hints.find(([pattern]) => pattern.test(text))?.[1]
-  const locations = [...text.matchAll(/(\/?(?:[\w.-]+\/)*[\w.-]+\.[a-z]{1,4})(?::(\d+)|\((\d+),\d+\))/gi)]
+  const locations = [...text.matchAll(/(\/?(?:[\w.-]+\/)*[\w.-]+\.[a-z]{1,10})(?::(\d+)|\((\d+),\d+\))/gi)]
   const files = new Set([
     ...locations.map((match) => `${match[1]} line ${match[2] ?? match[3]}`),
     ...context.files.map((file) => file.path),
   ])
   const functions = new Set([...text.matchAll(/^\s*at (?:async )?([\w$.]+) \(/gm)].map((match) => match[1]))
-  const firstError = text.split("\n").find((line) => /error|fail|exception/i.test(line))
+  const lines = text.split("\n").filter((line) => line.trim())
+  // Crashes such as "Killed" or "Segmentation fault" have no error keyword, so fall back to the first line.
+  const firstError = lines.find((line) => /error|fail|exception/i.test(line)) ?? lines[0]
+  const task = context.task?.trim()
 
   return {
     summary: summarize(context),
@@ -57,7 +60,7 @@ export function create(context: ErrorContext.Context): Explanation {
     missing: [
       ...(text ? [] : ["the error message or output"]),
       ...(files.size ? [] : ["which file failed"]),
-      ...(context.task ? [] : ["what the student was trying to do"]),
+      ...(task ? [] : ["what the student was trying to do"]),
     ],
   }
 }
@@ -115,7 +118,7 @@ function certainty(explanation: Explanation) {
 function summarize(context: ErrorContext.Context): string {
   const command = typeof context.input?.command === "string" ? ` \`${shorten(context.input.command)}\`` : ""
   const exit = context.exitCode !== undefined ? ` with exit code ${context.exitCode}` : ""
-  const task = context.task ? ` while working on: ${shorten(context.task)}` : ""
+  const task = context.task?.trim() ? ` while working on: ${shorten(context.task)}` : ""
   return `The ${context.tool ? `\`${context.tool}\`` : "last"} step${command} failed${exit}${task}.`
 }
 
