@@ -64,7 +64,9 @@ describe("session.error-explanation", () => {
     expect(medium).toContain("Confidence is medium")
     expect(medium).toContain("Say which part is a best guess.")
     expect(low).toContain("Say clearly that you are not sure")
-    expect(low).toContain("Say what is missing: which file failed, what the student was trying to do.")
+    expect(low).toContain(
+      "Say what is missing: which file failed, which command was run, what the student was trying to do.",
+    )
   })
 
   test("keeps the explanation separate from a fix", () => {
