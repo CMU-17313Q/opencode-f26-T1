@@ -1,4 +1,5 @@
 import type { ErrorContext } from "./error-context"
+import stripAnsi from "strip-ansi"
 
 export type Confidence = "high" | "medium" | "low"
 
@@ -35,13 +36,16 @@ const fixes = [
 ]
 
 export function create(context: ErrorContext.Context): Explanation {
-  const text = [context.error, context.output].filter((value) => value?.trim()).join("\n")
+  const text = stripAnsi([context.error, context.output].filter((value) => value?.trim()).join("\n"))
   const hint = hints.find(([pattern]) => pattern.test(text))?.[1]
-  const locations = [...text.matchAll(/(\/?(?:[\w.-]+\/)*[\w.-]+\.[a-z]{1,4})(?::(\d+)|\((\d+),\d+\))/gi)]
-  const files = new Set([
-    ...locations.map((match) => `${match[1]} line ${match[2] ?? match[3]}`),
-    ...context.files.map((file) => file.path),
-  ])
+  const locations = text
+    .split(/\r?\n/)
+    .map(sourceLocation)
+    .filter((location) => location !== undefined)
+  const comparisons = [
+    ...text.matchAll(/^[ \t]*Expected:[ \t]*(\S[^\r\n]*)\r?\n(?:[ \t]*\r?\n)*[ \t]*Received:[ \t]*(\S[^\r\n]*)/gm),
+  ]
+  const files = new Set([...locations, ...context.files.map((file) => file.path)])
   const functions = new Set([...text.matchAll(/^\s*at (?:async )?([\w$.]+) \(/gm)].map((match) => match[1]))
   const firstError = text.split("\n").find((line) => /error|fail|exception/i.test(line))
 
@@ -52,6 +56,7 @@ export function create(context: ErrorContext.Context): Explanation {
     evidence: [
       ...[...files].map((file) => `File: ${file}`),
       ...[...functions].map((name) => `Function: ${name}`),
+      ...comparisons.flatMap((match) => [`Expected: ${match[1].trim()}`, `Actual: ${match[2].trim()}`]),
       ...(firstError ? [`Error output: ${shorten(firstError)}`] : []),
     ],
     missing: [
@@ -60,6 +65,21 @@ export function create(context: ErrorContext.Context): Explanation {
       ...(context.task ? [] : ["what the student was trying to do"]),
     ],
   }
+}
+
+function sourceLocation(line: string): string | undefined {
+  const text = line.trim()
+  const frame = /^at[ \t]+(.+)$/.exec(text)?.[1]
+  if (frame !== undefined) {
+    // A named frame wraps the position in parentheses. A bare frame already
+    // starts with the path, which can contain its own parentheses.
+    const position = /^[^/\\(]+[ \t]+\((.*)\)$/.exec(frame)?.[1] ?? frame
+    const match = /^([^:]+\.[a-z]{1,4}):(\d+)(?::\d+)?$/i.exec(position)
+    return match ? `${match[1]} line ${match[2]}` : undefined
+  }
+
+  const match = /^([^:]+?\.[a-z]{1,4})(?:\((\d+),\d+\)|:(\d+)(?::\d+)?)(?=$|:|[ \t])/i.exec(text)
+  return match ? `${match[1]} line ${match[2] ?? match[3]}` : undefined
 }
 
 export function format(explanation: Explanation): string {
