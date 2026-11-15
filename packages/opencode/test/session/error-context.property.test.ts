@@ -318,15 +318,16 @@ describe("aaljabri P4B requirements", () => {
       fc.property(execution, fc.boolean(), fc.boolean(), (entry, error, full) => {
         const part = tool({ ...entry, kind: error ? "error" : "failed" }, 0)
         const input = structuredClone(part.state.input)
+        const fallback = `preview:${entry.output}`
         const result = ErrorContext.collect({
           ...part,
           state: {
             ...part.state,
             output: full ? entry.output : undefined,
-            metadata: { ...part.state.metadata, output: entry.output },
+            metadata: { ...part.state.metadata, output: fallback },
           },
         })
-        expect(result).toMatchObject({ input, exitCode: entry.exit, output: entry.output })
+        expect(result).toMatchObject({ input, exitCode: entry.exit, output: full ? entry.output : fallback })
         expect(result?.error).toBe(error ? entry.output : undefined)
         expect(part.state.input).toEqual(input)
       }),
