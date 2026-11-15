@@ -65,7 +65,7 @@ export const GuidedDebugTool = Tool.define<typeof Parameters, Metadata, Question
             ],
             tool,
           })
-          if (!explanationAnswers[0]?.includes(reviewTestingStrategy)) return keepInvestigating
+          if (!chose(explanationAnswers, reviewTestingStrategy)) return keepInvestigating
 
           const strategyAnswers = yield* question.ask({
             sessionID: ctx.sessionID,
@@ -89,7 +89,7 @@ export const GuidedDebugTool = Tool.define<typeof Parameters, Metadata, Question
             ],
             tool,
           })
-          if (!strategyAnswers[0]?.includes(showFix)) return keepInvestigating
+          if (!chose(strategyAnswers, showFix)) return keepInvestigating
 
           return {
             title: "Student requested the proposed fix",
@@ -105,3 +105,7 @@ export const GuidedDebugTool = Tool.define<typeof Parameters, Metadata, Question
     }
   }),
 )
+
+function chose(answers: ReadonlyArray<Question.Answer>, label: string) {
+  return answers.length === 1 && answers[0]?.length === 1 && answers[0][0] === label
+}

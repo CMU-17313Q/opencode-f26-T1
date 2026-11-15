@@ -118,7 +118,8 @@ export function generate(input: Input) {
 
 function summarize(value: string | undefined) {
   if (!value?.trim()) return
-  const text = value.trim().replace(/\s+/g, " ")
+  // Flatten diagnostic lines without changing spaces inside a source path.
+  const text = value.trim().replace(/\s*[\r\n]\s*/g, " ")
   return text.length > 240 ? `${text.slice(0, 237)}...` : text
 }
 
