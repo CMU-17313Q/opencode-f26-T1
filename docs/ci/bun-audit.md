@@ -39,9 +39,8 @@ including when the audit fails. Checkout and artifact actions are pinned by
 commit, permissions are limited to reading repository contents, and the job has
 a five-minute timeout.
 
-The team deployment currently runs in a separate workflow. This change does not
-make that workflow wait for this job or configure branch protection. Those
-settings require coordination with the deployment owner and repository admin.
+The shared pipeline runs the audit before downstream tests, the Docker build,
+and deployment. An audit failure stops those jobs.
 
 ## Findings and evidence
 
@@ -94,8 +93,8 @@ findings pass and are counted as obsolete baseline entries to remove.
 The shared owner, reason, source commit, and expiry apply to every listed entry.
 Abdulaziz (@akkubais) approved this temporary rollout baseline on October 31.
 The entries remain unresolved risks, not false positives or proof of safety.
-They expire at 00:00 UTC on November 14, 2026, when the gate fails until the
-remaining findings are remediated or explicitly reviewed again. Do not reset the
+The initial approval expired at 00:00 UTC on November 14, 2026. The renewal
+below covers the remaining 170 entries until 00:00 UTC on November 21, 2026. Do not reset the
 baseline automatically or silently extend the expiry.
 Changes to the baseline need explicit review in a pull request, including the
 reason for accepting each new finding or extending a deadline.
@@ -103,6 +102,12 @@ reason for accepting each new finding or extending a deadline.
 A green job means no high/critical finding outside this temporary baseline.
 It does not mean zero vulnerabilities. Instructor acceptance of this rollout
 policy is separate from the technical result.
+
+### November 14 maintenance review
+
+The [November 13 audit](https://github.com/CMU-17313Q/opencode-f26-T1/actions/runs/43479495159/job/132071963674) matched all 175 inherited entries and flagged one new advisory for `toml@4.1.1`. The root override resolves Effect's transitive TOML dependency to the [patched 5.0.1 release](https://github.com/advisories/GHSA-h895-cgqg-jf52). Five older TOML exceptions were removed.
+
+The remaining 161 high and 9 critical advisory entries across 46 package names retain their original matching criteria. The owner approved a seven-day remediation window for this existing debt so dependency owners can coordinate tested upgrades across the workspaces. Prioritize the nine critical entries. The gate rejects new or changed high/critical findings throughout the window and blocks again on November 21. A fresh audit on the shared change is required to verify the current advisory set.
 
 ## Changes from the P3A design
 
@@ -112,8 +117,8 @@ in JSON evidence. It uses the built-in audit command instead of installing
 another package. Actual execution exposed inherited findings, so the user
 approved a temporary baseline and a gate for new high/critical findings instead
 of a blanket vulnerability-free threshold. The baseline has exact entries and
-an expiry. Requiring this check and gating deployment remain pending the team's
-coordination rather than being claimed as already configured.
+an expiry. The team subsequently integrated this gate into the shared deployment
+pipeline.
 
 Maintenance means reviewing new advisories, updating affected dependencies with
 tests, and reviewing Bun upgrades alongside the repository's runtime pin. Any
