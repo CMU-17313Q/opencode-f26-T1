@@ -14,6 +14,7 @@ export interface ExecutedTest {
   name: string
   result: "passed" | "failed"
   evidence: string
+  command?: string
 }
 
 export interface Input {
@@ -47,11 +48,20 @@ export function create(input: Input): Strategy {
   const code = input.context?.exitCode
   const observed = failure ? `${failure}${code === undefined ? "" : ` (exit ${code})`}` : undefined
   const command = typeof input.context?.input?.command === "string" ? input.context.input.command.trim() : ""
-  const failed =
+  // A name belongs in this reproduction only when its command and full
+  // evidence match the current failure. Never guess between matching records.
+  const matching =
     input.executed
-      ?.filter((test) => test.result === "failed" && test.evidence.trim())
-      .map((test) => test.name.trim())
-      .filter(Boolean) ?? []
+      ?.filter((test) =>
+        command &&
+        test.command?.trim() === command &&
+        test.result === "failed" &&
+        test.name.trim() &&
+        test.evidence.trim() &&
+        (test.evidence.trim() === input.context?.error?.trim() ||
+          test.evidence.trim() === input.context?.output?.trim()),
+      ) ?? []
+  const failed = matching.length === 1 ? [matching[0]!.name.trim()] : []
   const edge =
     /\b(boundar(?:y|ies)|edge cases?|empty|missing|absent|minimal|none|null|undefined|zero|negative|maximum|minimum|max|min|limit|overflow|underflow|unmatched|malformed|invalid|duplicate|first|last)\b/i.test(
       input.proposedChange,
