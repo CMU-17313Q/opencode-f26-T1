@@ -48,6 +48,7 @@ export function create(input: Input): Strategy {
   const code = input.context?.exitCode
   const observed = failure ? `${failure}${code === undefined ? "" : ` (exit ${code})`}` : undefined
   const command = typeof input.context?.input?.command === "string" ? input.context.input.command.trim() : ""
+  const evidence = input.context?.output?.trim() || input.context?.error?.trim()
   // A name belongs in this reproduction only when its command and full
   // evidence match the current failure. Never guess between matching records.
   const matching =
@@ -58,8 +59,7 @@ export function create(input: Input): Strategy {
         test.result === "failed" &&
         test.name.trim() &&
         test.evidence.trim() &&
-        (test.evidence.trim() === input.context?.error?.trim() ||
-          test.evidence.trim() === input.context?.output?.trim()),
+        test.evidence.trim() === evidence,
       ) ?? []
   const failed = matching.length === 1 ? [matching[0]!.name.trim()] : []
   const edge =
