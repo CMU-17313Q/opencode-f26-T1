@@ -25,12 +25,13 @@ describe("session.testing-strategy", () => {
     expect(strategy.executed).toHaveLength(2)
   })
 
-  test.each(["missing command", "different evidence", "ambiguous records"])("omits a test name when its link is uncertain: %s", (reason) => {
+  test.each(["missing command", "different evidence", "different output", "ambiguous records"])("omits a test name when its link is uncertain: %s", (reason) => {
     const record: TestingStrategy.ExecutedTest = { name: "unlinked case", command: "bun test", result: "failed", evidence: "current failure" }
     const executed = reason === "missing command" ? [{ ...record, command: undefined }]
       : reason === "different evidence" ? [{ ...record, evidence: "older failure" }]
+      : reason === "different output" ? [record]
       : [record, { ...record, name: "another unlinked case" }]
-    const strategy = TestingStrategy.create({ proposedChange: "handle empty input", context: { error: "current failure", input: { command: "bun test" } }, executed })
+    const strategy = TestingStrategy.create({ proposedChange: "handle empty input", context: { error: "current failure", output: reason === "different output" ? "new full log" : undefined, input: { command: "bun test" } }, executed })
     const reproduction = strategy.recommended.find((item) => item.case === "failure")!
     expect(reproduction.test).toContain("current failure")
     expect(reproduction.test).toContain("bun test")
