@@ -2,6 +2,53 @@ import { describe, expect, test } from "bun:test"
 import { TestingStrategy } from "../../src/session/testing-strategy"
 
 describe("session.testing-strategy", () => {
+  test.each([
+    ["1 test failed", "bun test test/parser.test.ts"],
+    ["parser error", "bun test test/config.test.ts"],
+  ])("keeps separate failures apart: %s from %s", (earlierEvidence, earlierCommand) => {
+    const strategy = TestingStrategy.create({
+      proposedChange: "handle empty configuration input",
+      context: { error: "1 test failed", input: { command: "bun test test/config.test.ts" }, files: [{ path: "src/config.ts:8" }] },
+      executed: [
+        { name: "parser case", command: earlierCommand, result: "failed", evidence: earlierEvidence },
+        { name: "config case", command: "bun test test/config.test.ts", result: "failed", evidence: "1 test failed" },
+      ],
+    })
+    const reproduction = strategy.recommended.find((item) => item.case === "failure")!
+    expect(reproduction.test).toContain("config case")
+    expect(reproduction.test).toContain("bun test test/config.test.ts")
+    expect(reproduction.test).not.toContain("parser case")
+    expect(reproduction.test).not.toContain("bun test test/parser.test.ts")
+    const results = TestingStrategy.format(strategy).split("### Tests run\n")[1]!.split("### Recommended tests")[0]!
+    expect(results).toContain("parser case: failed")
+    expect(results).toContain("config case: failed")
+    expect(strategy.executed).toHaveLength(2)
+  })
+
+  test.each(["missing command", "different evidence", "different output", "ambiguous records"])("omits a test name when its link is uncertain: %s", (reason) => {
+    const record: TestingStrategy.ExecutedTest = { name: "unlinked case", command: "bun test", result: "failed", evidence: "current failure" }
+    const executed = reason === "missing command" ? [{ ...record, command: undefined }]
+      : reason === "different evidence" ? [{ ...record, evidence: "older failure" }]
+      : reason === "different output" ? [record]
+      : [record, { ...record, name: "another unlinked case" }]
+    const strategy = TestingStrategy.create({ proposedChange: "handle empty input", context: { error: "current failure", output: reason === "different output" ? "new full log" : undefined, input: { command: "bun test" } }, executed })
+    const reproduction = strategy.recommended.find((item) => item.case === "failure")!
+    expect(reproduction.test).toContain("current failure")
+    expect(reproduction.test).toContain("bun test")
+    expect(reproduction.test).not.toContain("unlinked case")
+    expect(strategy.executed).toHaveLength(executed.length)
+    expect(TestingStrategy.format(strategy)).toContain("unlinked case: failed")
+  })
+
+  test("ties a test name to full output when no separate error was supplied", () => {
+    const strategy = TestingStrategy.create({
+      proposedChange: "handle empty input",
+      context: { output: "current failure log", input: { command: "bun test" } },
+      executed: [{ name: "current case", command: "bun test", result: "failed", evidence: "current failure log" }],
+    })
+    expect(strategy.recommended.find((item) => item.case === "failure")!.test).toContain("current case")
+  })
+
   test("connects normal, edge, and failure recommendations to the proposed parser change", () => {
     const strategy = TestingStrategy.create({
       proposedChange: "reject unmatched closing brackets before building the syntax tree",

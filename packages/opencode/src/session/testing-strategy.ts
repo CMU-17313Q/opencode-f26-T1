@@ -14,6 +14,7 @@ export interface ExecutedTest {
   name: string
   result: "passed" | "failed"
   evidence: string
+  command?: string
 }
 
 export interface Input {
@@ -46,6 +47,21 @@ export function create(input: Input): Strategy {
   const operation = input.context?.tool ? `${input.context.tool} operation` : "original operation"
   const code = input.context?.exitCode
   const observed = failure ? `${failure}${code === undefined ? "" : ` (exit ${code})`}` : undefined
+  const command = typeof input.context?.input?.command === "string" ? input.context.input.command.trim() : ""
+  const evidence = input.context?.output?.trim() || input.context?.error?.trim()
+  // A name belongs in this reproduction only when its command and full
+  // evidence match the current failure. Never guess between matching records.
+  const matching =
+    input.executed
+      ?.filter((test) =>
+        command &&
+        test.command?.trim() === command &&
+        test.result === "failed" &&
+        test.name.trim() &&
+        test.evidence.trim() &&
+        test.evidence.trim() === evidence,
+      ) ?? []
+  const failed = matching.length === 1 ? [matching[0]!.name.trim()] : []
   const edge =
     /\b(boundar(?:y|ies)|edge cases?|empty|missing|absent|minimal|none|null|undefined|zero|negative|maximum|minimum|max|min|limit|overflow|underflow|unmatched|malformed|invalid|duplicate|first|last)\b/i.test(
       input.proposedChange,
@@ -83,9 +99,9 @@ export function create(input: Input): Strategy {
         ? [
             {
               case: "failure" as const,
-              test: `Reproduce the ${operation} failure (${observed}) and repeat the same operation after the change; also verify genuinely invalid input still reports a controlled failure.`,
+              test: `Reproduce the ${operation} failure (${observed}) in ${target}${failed.length ? ` for ${failed.join(", ")}` : ""}${command ? ` using \`${command}\`` : ""} and repeat the same operation after the change; also verify genuinely invalid input still reports a controlled failure.`,
               reason:
-                "Connects the test to the reported problem and ensures the change fixes the intended case without turning real failures into false successes.",
+                `Checks the proposed behavior (${change}) at ${target} without the original error, while ensuring genuinely invalid input still reports a controlled failure.`,
             },
           ]
         : []),
