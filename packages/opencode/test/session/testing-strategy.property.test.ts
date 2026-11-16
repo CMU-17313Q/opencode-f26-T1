@@ -63,13 +63,18 @@ describe("P4B akkubais: testing-strategy properties", () => {
         const strategy = TestingStrategy.create({
           proposedChange,
           context: { tool: "shell", error: "empty input crashed", files: [{ path }], input: { command } },
-          executed: [{ name, result: "failed", evidence: "empty input crashed" }],
+          executed: [
+            { name: "earlier unrelated failure", command: "bun test test/other.test.ts --old-run", result: "failed", evidence: "empty input crashed" },
+            { name, command, result: "failed", evidence: "empty input crashed" },
+          ],
         })
         const reproduction = strategy.recommended.find((item) => item.case === "failure")
         expect(reproduction).toBeDefined()
         expect(reproduction!.test).toContain(name)
         expect(reproduction!.test).toContain(path)
         expect(reproduction!.test).toContain(command)
+        expect(reproduction!.test).not.toContain("earlier unrelated failure")
+        expect(strategy.executed).toHaveLength(2)
       }),
       options,
     )
