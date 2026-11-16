@@ -46,6 +46,12 @@ export function create(input: Input): Strategy {
   const operation = input.context?.tool ? `${input.context.tool} operation` : "original operation"
   const code = input.context?.exitCode
   const observed = failure ? `${failure}${code === undefined ? "" : ` (exit ${code})`}` : undefined
+  const command = typeof input.context?.input?.command === "string" ? input.context.input.command.trim() : ""
+  const failed =
+    input.executed
+      ?.filter((test) => test.result === "failed" && test.evidence.trim())
+      .map((test) => test.name.trim())
+      .filter(Boolean) ?? []
   const edge =
     /\b(boundar(?:y|ies)|edge cases?|empty|missing|absent|minimal|none|null|undefined|zero|negative|maximum|minimum|max|min|limit|overflow|underflow|unmatched|malformed|invalid|duplicate|first|last)\b/i.test(
       input.proposedChange,
@@ -83,9 +89,9 @@ export function create(input: Input): Strategy {
         ? [
             {
               case: "failure" as const,
-              test: `Reproduce the ${operation} failure (${observed}) and repeat the same operation after the change; also verify genuinely invalid input still reports a controlled failure.`,
+              test: `Reproduce the ${operation} failure (${observed}) in ${target}${failed.length ? ` for ${failed.join(", ")}` : ""}${command ? ` using \`${command}\`` : ""} and repeat the same operation after the change; also verify genuinely invalid input still reports a controlled failure.`,
               reason:
-                "Connects the test to the reported problem and ensures the change fixes the intended case without turning real failures into false successes.",
+                `Checks the proposed behavior (${change}) at ${target} without the original error, while ensuring genuinely invalid input still reports a controlled failure.`,
             },
           ]
         : []),
