@@ -40,13 +40,13 @@ Before the fixes, R1 and R3 passed. R2 and R7 failed.
 | R2 | Change: `handle empty input in a by returning []`; test: `empty input`; location: `src/a.ts:1`; command: `bun test test/a.test.ts`. | The reproduction step left out the location and command. It also did not include supplied failed-test names. | Include the supplied failed-test names, location and command in that step. |
 | R7 | Change: `handle empty input in a by returning []`; move `src/old-a.ts:1` to `src/new-a.ts:2`. | The failure recommendation left out the location and used a general explanation that did not describe the expected `[]` behavior. | Show the location and explain the proposed behavior being checked without the original error. |
 
-After the review fix: 15 tests passed, 0 failed. This includes all four properties (800 generated cases), the five original builder tests, and six regression cases.
+After the review fix: 16 tests passed, 0 failed. This includes all four properties (800 generated cases), the five original builder tests, and seven regression cases.
 
 ### R2 review fix
 
-The reviewer found that the reproduction step added every failed test name to the latest failure, even if the tests came from different commands. I added an optional command to each run record. A name is included only when exactly one failed record matches both the current command and its full error or output text. Missing or ambiguous links leave the name out; all results still appear in Tests run.
+The reviewer found that the reproduction step added every failed test name to the latest failure, even if the tests came from different commands. I added an optional command to each run record. A name is included only when exactly one failed record matches both the current command and its full output (or full error if output is absent). Missing or ambiguous links leave the name out; all results still appear in Tests run.
 
-The regression cases cover two separate failures with the same error but different commands, two failures with the same command but different errors, missing commands, different evidence, ambiguous records, and matching full output. The tool accepts the optional command so this information reaches the builder.
+The regression cases cover two separate failures with the same error but different commands, two failures with the same command but different errors, missing commands, different evidence, different output despite a shared error, ambiguous records, and matching full output. The tool accepts the optional command so this information reaches the builder.
 
 Run from `packages/opencode`:
 
