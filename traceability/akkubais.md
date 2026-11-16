@@ -25,7 +25,7 @@ I kept all seven P4A requirements because each can be built and checked using su
 I tested R1, R2, R3 and R7 using three kinds: invariant, round-trip and metamorphic. R4, R5 and R6 remain requirements for later work; these properties do not claim they are implemented.
 
 - R1 generates missing records and records with blank or whitespace-only names or evidence. It checks the Tests run section separately from the recommendations.
-- R2 varies the test name, file and line, and command independently. They come from `executed[].name`, `context.files[].path`, and `context.input.command`. It checks that all three appear in the reproduction step itself.
+- R2 varies the test name, file and line, and command independently. The current failed record supplies the same command and full error evidence as the current failure. An older record uses a different command, even when its error text is identical. The property checks that only the current test name appears in the reproduction step and both records remain in Tests run.
 - R3 adds a failing log and run, then removes the error, log and run. It checks that the output returns to the original plan and keeps the normal and edge checks.
 - R7 moves the same error to another file and line. Only the location should change; the explanation must still describe the expected empty-input behavior, including `[]`, without the original error.
 
@@ -40,7 +40,13 @@ Before the fixes, R1 and R3 passed. R2 and R7 failed.
 | R2 | Change: `handle empty input in a by returning []`; test: `empty input`; location: `src/a.ts:1`; command: `bun test test/a.test.ts`. | The reproduction step left out the location and command. It also did not include supplied failed-test names. | Include the supplied failed-test names, location and command in that step. |
 | R7 | Change: `handle empty input in a by returning []`; move `src/old-a.ts:1` to `src/new-a.ts:2`. | The failure recommendation left out the location and used a general explanation that did not describe the expected `[]` behavior. | Show the location and explain the proposed behavior being checked without the original error. |
 
-After the fixes: 9 tests passed, 0 failed. This includes all four properties (800 generated cases) and the five existing builder tests.
+After the review fix: 15 tests passed, 0 failed. This includes all four properties (800 generated cases), the five original builder tests, and six regression cases.
+
+### R2 review fix
+
+The reviewer found that the reproduction step added every failed test name to the latest failure, even if the tests came from different commands. I added an optional command to each run record. A name is included only when exactly one failed record matches both the current command and its full error or output text. Missing or ambiguous links leave the name out; all results still appear in Tests run.
+
+The regression cases cover two separate failures with the same error but different commands, two failures with the same command but different errors, missing commands, different evidence, ambiguous records, and matching full output. The tool accepts the optional command so this information reaches the builder.
 
 Run from `packages/opencode`:
 
