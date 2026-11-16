@@ -15,6 +15,9 @@ export const Parameters = Schema.Struct({
         name: Schema.String,
         result: Schema.Literals(["passed", "failed"]),
         evidence: Schema.String.annotate({ description: "The output that shows this result." }),
+        command: Schema.optional(Schema.String).annotate({
+          description: "Exact command that produced this evidence. Leave out if unknown; do not infer it from another run.",
+        }),
       }),
     ),
   ).annotate({
